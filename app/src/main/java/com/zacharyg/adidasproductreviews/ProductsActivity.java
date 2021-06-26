@@ -2,6 +2,8 @@ package com.zacharyg.adidasproductreviews;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
 import android.graphics.drawable.AnimatedVectorDrawable;
@@ -11,10 +13,10 @@ import android.view.animation.Interpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 
-public class MainActivity extends AppCompatActivity {
-    private RelativeLayout rlRoot;
+public class ProductsActivity extends AppCompatActivity {
+    private LinearLayout llRoot;
 
     private ImageView ivSearch;
     private EditText etSearch;
@@ -33,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        rlRoot   = findViewById(R.id.rl_root);
+        llRoot   = findViewById(R.id.ll_root);
         ivSearch = findViewById(R.id.iv_search);
         etSearch = findViewById(R.id.et_search);
 
@@ -44,12 +46,22 @@ public class MainActivity extends AppCompatActivity {
 
         etSearch.setEnabled(false);
 
-        loadInitialSearchBarAnimation();
         setupListeners();
+
+        loadInitialSearchBarAnimation();
+        loadProductsFragment();
+    }
+
+    private void loadProductsFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        ProductsFragment productsFragment = new ProductsFragment();
+        fragmentTransaction.add(R.id.fl_products, productsFragment);
+        fragmentTransaction.commit();
     }
 
     private void setupListeners() {
-        rlRoot.setOnClickListener(v -> {
+        llRoot.setOnClickListener(v -> {
             if (etSearch.getText().length() == 0) {
                 hideSearchBar();
             }
