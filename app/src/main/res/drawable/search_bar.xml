@@ -23,16 +23,16 @@
     <path
         android:name="search"
         android:pathData="@string/path_search"
-        android:strokeWidth="2"
-        android:strokeColor="#ffffff"
+        android:strokeWidth="1.5"
+        android:strokeColor="@color/black"
         android:strokeAlpha="0.8"
         android:strokeLineCap="round" />
 
     <path
         android:name="bar"
         android:pathData="M0,23 L149,23"
-        android:strokeWidth="2"
-        android:strokeColor="#ffffff"
+        android:strokeWidth="1"
+        android:strokeColor="@color/black"
         android:strokeAlpha="0.8"
         android:strokeLineCap="square" />
 </vector>

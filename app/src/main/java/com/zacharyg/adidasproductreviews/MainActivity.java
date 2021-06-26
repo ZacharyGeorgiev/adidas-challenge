@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         etSearch.setEnabled(false);
 
-        loadInitialSearchAnimation();
+        loadInitialSearchBarAnimation();
         setupListeners();
     }
 
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void loadInitialSearchAnimation() {
+    private void loadInitialSearchBarAnimation() {
         ivSearch.setImageDrawable(avdBarToIcon);
         avdBarToIcon.start();
         ivSearch.animate().setDuration(duration-400).setInterpolator(interpolator);

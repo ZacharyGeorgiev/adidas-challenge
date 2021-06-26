@@ -7,34 +7,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="@color/black">
+    android:background="@color/white">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="20dp">
-
-        <EditText
-            android:id="@+id/et_search"
-            android:layout_width="150dp"
-            android:layout_height="22dp"
-            android:layout_gravity="center"
-            android:background="@null"
-            android:textSize="14sp"
-            android:textColor="?android:colorAccent"
-            android:alpha="0"
-            android:importantForAutofill="no"
-            android:inputType="text"
-            tools:ignore="LabelFor" />
+        android:layout_width="match_parent"
+        android:layout_height="70dp">
 
         <ImageView
-            android:id="@+id/iv_search"
-            android:layout_gravity="center"
-            android:layout_width="150dp"
-            android:layout_height="24dp"
-            android:src="@drawable/search_bar" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_adidas_originals_logo"/>
 
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="15dp">
+
+            <EditText
+                android:id="@+id/et_search"
+                android:layout_width="150dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center"
+                android:fontFamily="@font/itc_avant_garde_regular"
+                android:background="@null"
+                android:textSize="15sp"
+                android:textColor="@color/adidas_gray"
+                android:alpha="0"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                tools:ignore="LabelFor" />
+
+            <ImageView
+                android:id="@+id/iv_search"
+                android:layout_gravity="center"
+                android:layout_width="150dp"
+                android:layout_height="24dp"
+                android:src="@drawable/search_bar" />
+
+        </RelativeLayout>
     </RelativeLayout>
+    
+
+
+
 
 </RelativeLayout>
