@@ -30,7 +30,7 @@ public class ProductsRemoteRepo {
                         return;
                     }
                     Log.d(TAG, "Product fetch failed: " + e.toString());
-                    callback.onFailure(-1, e.getMessage());
+                    callback.onFailure(e.getMessage());
                 });
     }
 }
