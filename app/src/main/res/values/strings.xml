@@ -9,4 +9,7 @@
     <string name="sample_price">$85.00</string>
     <string name="sample_product_name">Americana Graphic Tee</string>
     <string name="sample_product_description">Cream tee with a small logo</string>
+    <string name="no_results">Oops - no results for</string>
+    <string name="no_results_explanation">Don’t give up! Check the spelling or try something less specific.</string>
+    <string name="sample_no_results">Oops - no results for \'test\'.</string>
 </resources>

@@ -14,8 +14,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class ProductsFragment extends Fragment implements ProductsAdapter.OnProductClickListener {
@@ -24,6 +27,10 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
     private Context context;
 
     private RecyclerView rvProducts;
+
+    private LinearLayout llNoResults;
+
+    private TextView tvNoResults;
 
     private ProductsAdapter productsAdapter;
 
@@ -42,6 +49,10 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_products, container, false);
+
+        llNoResults = view.findViewById(R.id.ll_no_results);
+
+        tvNoResults = view.findViewById(R.id.tv_no_results);
 
         rvProducts = view.findViewById(R.id.rv_products);
 
@@ -71,6 +82,16 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
                 .filter(product -> product.getName().toLowerCase().contains(criteria) || product.getDescription().toLowerCase().contains(criteria))
                 .collect(Collectors.toList());
         productsAdapter.updateProducts(filteredProducts);
+
+        if (filteredProducts.size() == 0) {
+            tvNoResults.setText(String.format(Locale.ENGLISH, "%s '%s'.", getString(R.string.no_results), criteria));
+
+            llNoResults.setVisibility(View.VISIBLE);
+            rvProducts.setVisibility(View.GONE);
+        } else {
+            llNoResults.setVisibility(View.GONE);
+            rvProducts.setVisibility(View.VISIBLE);
+        }
     }
 
     private void fetchProducts() {

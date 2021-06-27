@@ -37,7 +37,9 @@
                 android:textColor="@color/adidas_gray"
                 android:alpha="0"
                 android:importantForAutofill="no"
+                android:textCursorDrawable="@null"
                 android:inputType="text"
+                android:imeOptions="actionDone"
                 tools:ignore="LabelFor" />
 
             <ImageView

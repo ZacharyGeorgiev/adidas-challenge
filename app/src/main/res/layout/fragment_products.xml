@@ -11,4 +11,39 @@
         android:layout_height="match_parent"
         android:overScrollMode="never"/>
 
+    <LinearLayout
+        android:id="@+id/ll_no_results"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_marginTop="120dp"
+        android:padding="30dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_no_results"
+            android:layout_marginTop="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sample_no_results"
+            android:textAllCaps="true"
+            android:textSize="18sp"
+            android:fontFamily="@font/itc_avant_garde_bold"
+            android:textColor="@color/black"
+            android:letterSpacing="0.1"/>
+
+        <TextView
+            android:layout_marginTop="7dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_results_explanation"
+            android:textAllCaps="false"
+            android:textSize="12sp"
+            android:fontFamily="@font/itc_avant_garde_regular"
+            android:textColor="@color/adidas_gray"
+            android:letterSpacing="0.1" />
+
+    </LinearLayout>
+
 </FrameLayout>
