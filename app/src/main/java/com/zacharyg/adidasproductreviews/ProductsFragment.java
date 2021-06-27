@@ -22,6 +22,8 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
 
     private Context context;
 
+    RecyclerView rvProducts;
+
     public ProductsFragment() {
     }
 
@@ -36,15 +38,14 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_products, container, false);
 
-        final RecyclerView rvProducts = view.findViewById(R.id.rv_products);
+        rvProducts = view.findViewById(R.id.rv_products);
 
         // Configure the recycler view
         rvProducts.setLayoutManager(new LinearLayoutManager(requireContext()));
         final DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvProducts.getContext(), DividerItemDecoration.VERTICAL);
         rvProducts.addItemDecoration(dividerItemDecoration);
-        final ProductsAdapter adapter = new ProductsAdapter(requireContext());
-        adapter.setOnProductClickListener(this);
-        rvProducts.setAdapter(adapter);
+
+        fetchProducts();
 
         return view;
     }
@@ -58,5 +59,25 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
     @Override
     public void onProductClick(String id) {
 
+    }
+
+    private void fetchProducts() {
+        ProductsRemoteRepo.getProducts(context, new Callbacks.GetProductsComplete() {
+            @Override
+            public void onSuccess(List<Product> products) {
+                loadProducts(products);
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Log.d(TAG, "fetchProducts: onFailure - " + errorMessage);
+            }
+        });
+    }
+
+    private void loadProducts(List<Product> products) {
+        final ProductsAdapter adapter = new ProductsAdapter(requireContext(), products);
+        adapter.setOnProductClickListener(this);
+        rvProducts.setAdapter(adapter);
     }
 }

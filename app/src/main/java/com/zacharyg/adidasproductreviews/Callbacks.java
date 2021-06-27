@@ -7,7 +7,11 @@ public class Callbacks {
         void onFailure(int errorCode, String errorMessage);
     }
 
-    public interface GetProductsComplete extends NetworkRequestErrorCallback {
+    private interface RequestErrorCallback {
+        void onFailure(String errorMessage);
+    }
+
+    public interface GetProductsComplete extends RequestErrorCallback {
         void onSuccess(List<Product> products);
     }
 }

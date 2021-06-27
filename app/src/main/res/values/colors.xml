@@ -9,4 +9,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="adidas_gray">#2b2b28</color>
+    <color name="product_background">#eceef0</color>
 </resources>
