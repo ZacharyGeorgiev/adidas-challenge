@@ -70,7 +70,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
 
     @FunctionalInterface
     public interface OnProductClickListener {
-        void onProductClick(String id);
+        void onProductClick(Product product);
     }
 
     public final class ViewHolder extends RecyclerView.ViewHolder {
@@ -92,7 +92,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
             LinearLayout llRoot = itemView.findViewById(R.id.ll_root);
             llRoot.setOnClickListener(v -> {
                 if (onProductClickListener != null) {
-                    onProductClickListener.onProductClick(products.get(getAdapterPosition()).getId());
+                    onProductClickListener.onProductClick(products.get(getAdapterPosition()));
                 }
             });
         }

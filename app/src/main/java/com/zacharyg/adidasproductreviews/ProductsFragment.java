@@ -1,6 +1,7 @@
 package com.zacharyg.adidasproductreviews;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -73,8 +74,10 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
     }
 
     @Override
-    public void onProductClick(String id) {
-
+    public void onProductClick(Product product) {
+        Intent productDetailsIntent = new Intent(context, ProductDetailsActivity.class);
+        productDetailsIntent.putExtra("product", product);
+        startActivity(productDetailsIntent);
     }
 
     public void filterProducts(String criteria) {
