@@ -8,6 +8,8 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
@@ -30,6 +32,8 @@ public class ProductsActivity extends AppCompatActivity {
     private AnimatedVectorDrawable avdBarToIcon;
 
     private Interpolator interpolator;
+
+    private ProductsFragment productsFragment;
 
     private final int duration = 800;
 
@@ -60,7 +64,7 @@ public class ProductsActivity extends AppCompatActivity {
     private void loadProductsFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        ProductsFragment productsFragment = new ProductsFragment();
+        productsFragment = new ProductsFragment();
         fragmentTransaction.add(R.id.fl_products, productsFragment);
         fragmentTransaction.commit();
     }
@@ -89,6 +93,19 @@ public class ProductsActivity extends AppCompatActivity {
             }
             else {
                 imm.hideSoftInputFromWindow(v.getWindowToken(),0);
+            }
+        });
+
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                productsFragment.filterProducts(s.toString());
             }
         });
     }

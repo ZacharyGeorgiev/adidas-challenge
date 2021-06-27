@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -28,11 +29,18 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
 
     public ProductsAdapter(Context context, List<Product> products) {
         this.context = context;
-        this.products = products;
+        this.products = new ArrayList<>();
+        this.products.addAll(products);
     }
 
     public void setOnProductClickListener(@NonNull final OnProductClickListener listener) {
         this.onProductClickListener = listener;
+    }
+
+    public void updateProducts(List<Product> products) {
+        this.products.clear();
+        this.products.addAll(products);
+        notifyDataSetChanged();
     }
 
     @NonNull
