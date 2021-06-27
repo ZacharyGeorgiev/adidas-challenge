@@ -13,4 +13,9 @@
     <string name="no_results_explanation">Don’t give up! Check the spelling or try something less specific.</string>
     <string name="sample_no_results">Oops - no results for \'test\'.</string>
     <string name="add_review">Add review</string>
+    <string name="sample_review">I bought these for my wife who is a serious golfer. She absolutely loves the style, functionality, and comfort of these shoes. Definetely recommend.</string>
+    <string name="recommends_this_product">Recommends this product</string>
+    <string name="sample_username">yellowbutterfly466</string>
+    <string name="sample_country">United Kingdom</string>
+    <string name="sample_review_count">5 reviews</string>
 </resources>
