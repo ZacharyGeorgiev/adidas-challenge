@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProductDetailsActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:background="@color/product_background">
+            <ImageView
+                android:id="@+id/iv_product"
+                android:layout_width="260dp"
+                android:layout_height="260dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/adidas_tee"
+                android:contentDescription="@string/product" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sample_price"
+            android:textSize="11sp"
+            android:fontFamily="@font/itc_avant_garde_regular"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:letterSpacing="0.1"
+            android:layout_marginTop="12dp"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_marginTop="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sample_product_name"
+            android:textAllCaps="true"
+            android:textSize="16sp"
+            android:fontFamily="@font/itc_avant_garde_medium"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:letterSpacing="0.15"/>
+
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_marginTop="7dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sample_product_description"
+            android:textAllCaps="false"
+            android:textSize="12sp"
+            android:fontFamily="@font/itc_avant_garde_regular"
+            android:textColor="@color/adidas_gray"
+            android:letterSpacing="0.1" />
+
+        <FrameLayout
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/adidas_gray"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/bg_rect_button"
+            android:layout_alignParentTop="true"
+            android:layout_width="match_parent"
+            android:text="@string/add_review"
+            android:fontFamily="@font/itc_avant_garde_regular"
+            android:textStyle="bold"
+            android:textSize="13sp"
+            android:textAlignment="textStart"
+            android:textColor="@color/white"
+            android:textAllCaps="true"
+            android:letterSpacing="0.17"
+            android:drawableEnd="@drawable/ic_review"
+            android:layout_height="50dp"/>
+        
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/black"/>
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

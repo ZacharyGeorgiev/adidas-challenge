@@ -12,4 +12,5 @@
     <string name="no_results">Oops - no results for</string>
     <string name="no_results_explanation">Don’t give up! Check the spelling or try something less specific.</string>
     <string name="sample_no_results">Oops - no results for \'test\'.</string>
+    <string name="add_review">Add review</string>
 </resources>
