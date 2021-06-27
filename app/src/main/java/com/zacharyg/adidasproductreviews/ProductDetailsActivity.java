@@ -5,9 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,6 +20,8 @@ import java.io.Serializable;
 import java.util.Locale;
 
 public class ProductDetailsActivity extends AppCompatActivity {
+    private ImageButton ibBack;
+
     private ImageView ivProduct;
 
     private TextView tvPrice;
@@ -30,6 +34,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_details);
+
+        ibBack        = findViewById(R.id.ib_back);
 
         ivProduct     = findViewById(R.id.iv_product);
 
@@ -49,6 +55,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
             tvName.setText(product.getName());
             tvDescription.setText(product.getDescription());
         }
+
+        ibBack.setOnClickListener(v -> finish());
 
         updateStatusBarColor();
     }

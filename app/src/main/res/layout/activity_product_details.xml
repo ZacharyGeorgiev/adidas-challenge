@@ -99,15 +99,18 @@
             android:letterSpacing="0.17"
             android:drawableEnd="@drawable/ic_review"
             android:layout_height="50dp"/>
-        
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-            android:background="@color/black"/>
 
     </RelativeLayout>
 
-
+    <ImageButton
+        android:id="@+id/ib_back"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@android:color/transparent"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_left_arrow"/>
 
 </RelativeLayout>
