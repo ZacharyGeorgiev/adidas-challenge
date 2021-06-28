@@ -8,11 +8,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,8 +62,38 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
 
         rvProducts = view.findViewById(R.id.rv_products);
 
+        LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
+
         // Configure the recycler view
-        rvProducts.setLayoutManager(new LinearLayoutManager(requireContext()));
+        rvProducts.setLayoutManager(layoutManager);
+
+        rvProducts.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (getActivity() != null) {
+                    try {
+                        ProductsActivity productsActivity = (ProductsActivity) getActivity();
+
+                        if (layoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                            productsActivity.moveProducts(true);
+                            return;
+                        }
+
+                        if (dy > 0) {
+                            productsActivity.animateTopBar(false);
+                            productsActivity.moveProducts(false);
+                        } else if (dy < 0) {
+                            productsActivity.animateTopBar(true);
+                        }
+                    } catch (Exception ex) {
+                        Log.d(TAG, "Exception: " + ex.getMessage());
+                    }
+                }
+
+            }
+        });
 
         loadLoadingIndicatorFragment();
         fetchProducts();

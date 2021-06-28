@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:id="@+id/ll_root"
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,8 +8,17 @@
     android:orientation="vertical"
     android:background="@color/white">
 
-    <RelativeLayout
+    <FrameLayout
+        android:id="@+id/fl_products"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_top_bar"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:clickable="true"
+        android:focusable="true"
         android:layout_height="70dp">
 
         <ImageView
@@ -28,7 +36,7 @@
 
             <EditText
                 android:id="@+id/et_search"
-                android:layout_width="150dp"
+                android:layout_width="140dp"
                 android:layout_height="22dp"
                 android:layout_gravity="center"
                 android:fontFamily="@font/itc_avant_garde_regular"
@@ -45,16 +53,11 @@
             <ImageView
                 android:id="@+id/iv_search"
                 android:layout_gravity="center"
-                android:layout_width="150dp"
+                android:layout_width="140dp"
                 android:layout_height="24dp"
                 android:src="@drawable/search_bar" />
 
         </RelativeLayout>
     </RelativeLayout>
 
-    <FrameLayout
-        android:id="@+id/fl_products"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-</LinearLayout>
+</RelativeLayout>

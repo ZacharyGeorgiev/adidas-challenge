@@ -5,28 +5,29 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
+import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import java.util.List;
+import android.widget.RelativeLayout;
 
 public class ProductsActivity extends AppCompatActivity {
     private static final String TAG = "ProductsActivity";
 
-    private LinearLayout llRoot;
+    private RelativeLayout rlTopBar;
+
+    private FrameLayout flProducts;
 
     private ImageView ivSearch;
     private EditText etSearch;
@@ -42,12 +43,19 @@ public class ProductsActivity extends AppCompatActivity {
 
     private boolean searchBarExpanded = false;
 
+    private boolean topBarAnimationInProgress = false;
+    private boolean productsAnimationInProgress = false;
+    private boolean appJustLaunched = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_products);
 
-        llRoot   = findViewById(R.id.ll_root);
+        rlTopBar = findViewById(R.id.rl_top_bar);
+
+        flProducts = findViewById(R.id.fl_products);
+
         ivSearch = findViewById(R.id.iv_search);
         etSearch = findViewById(R.id.et_search);
 
@@ -72,8 +80,52 @@ public class ProductsActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
+    public void animateTopBar(boolean show) {
+        if (topBarAnimationInProgress) { return; }
+
+        topBarAnimationInProgress = true;
+
+        if (show) {
+            rlTopBar.setVisibility(View.VISIBLE);
+        }
+        rlTopBar.animate()
+                .translationY(show ? 0 : -rlTopBar.getHeight())
+                .alpha(show ? 1f : 0f)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        if (!show) {
+                            rlTopBar.setVisibility(View.GONE);
+                        }
+                        topBarAnimationInProgress = false;
+                    }
+                });
+    }
+
+    public void moveProducts(boolean down) {
+        if (appJustLaunched && down) {
+            flProducts.setTranslationY(rlTopBar.getHeight());
+            appJustLaunched = false;
+            return;
+        }
+        if (productsAnimationInProgress) { return; }
+
+        productsAnimationInProgress = true;
+
+        flProducts.animate()
+                .translationY(down ? rlTopBar.getHeight() : 0f)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        productsAnimationInProgress = false;
+                    }
+                });
+    }
+
     private void setupListeners() {
-        llRoot.setOnClickListener(v -> {
+        rlTopBar.setOnClickListener(v -> {
             if (etSearch.getText().length() == 0) {
                 hideSearchBar();
             }
@@ -125,7 +177,7 @@ public class ProductsActivity extends AppCompatActivity {
     private void loadInitialSearchBarAnimation() {
         ivSearch.setImageDrawable(avdBarToIcon);
         avdBarToIcon.start();
-        ivSearch.animate().setDuration(duration-400).setInterpolator(interpolator);
+        ivSearch.animate().setDuration(duration - 400).setInterpolator(interpolator);
         etSearch.setAlpha(0f);
     }
 
