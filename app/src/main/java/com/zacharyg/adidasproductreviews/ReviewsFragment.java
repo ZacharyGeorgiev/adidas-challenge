@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -63,9 +64,12 @@ public class ReviewsFragment extends Fragment {
         rvReviews = view.findViewById(R.id.rv_reviews);
 
         // Configure the recycler view
-        rvReviews.setLayoutManager(new LinearLayoutManager(requireContext()));
-        final DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvReviews.getContext(), DividerItemDecoration.VERTICAL);
-        rvReviews.addItemDecoration(dividerItemDecoration);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
+        layoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        rvReviews.setLayoutManager(layoutManager);
+
+        PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
+        pagerSnapHelper.attachToRecyclerView(rvReviews);
 
         if (getArguments() != null) {
             productID = getArguments().getString(ARG_PRODUCT_ID);
