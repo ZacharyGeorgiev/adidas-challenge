@@ -14,4 +14,12 @@ public class Callbacks {
     public interface GetProductsComplete extends RequestErrorCallback {
         void onSuccess(List<Product> products);
     }
+
+    public interface GetReviewsComplete extends RequestErrorCallback {
+        void onSuccess(List<Review> reviews);
+    }
+
+    public interface PostReviewComplete extends RequestErrorCallback {
+        void onSuccess();
+    }
 }

@@ -3,6 +3,8 @@ package com.zacharyg.adidasproductreviews;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -54,11 +56,23 @@ public class ProductDetailsActivity extends AppCompatActivity {
             tvPrice.setText(String.format(Locale.ENGLISH,"%s%d.00", product.getCurrency(), product.getPrice()));
             tvName.setText(product.getName());
             tvDescription.setText(product.getDescription());
+
+            Log.d("Products", "Product: " + product.toString());
         }
 
         ibBack.setOnClickListener(v -> finish());
 
         updateStatusBarColor();
+        loadReviewsFragment();
+    }
+
+    private void loadReviewsFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        ReviewsFragment reviewsFragment = ReviewsFragment.newInstance(product.getId());
+        Log.d("Products", "Created the reviews fragment with id: " + product.getId());
+        fragmentTransaction.add(R.id.fl_reviews, reviewsFragment);
+        fragmentTransaction.commit();
     }
 
     private void updateStatusBarColor() {
