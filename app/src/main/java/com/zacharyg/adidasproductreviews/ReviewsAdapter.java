@@ -55,8 +55,8 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
         }
 
         holder.tvText.setText(review.getText());
-//        holder.tvUsername.setText(product.getName());
-//        holder.tvDescription.setText(product.getDescription());
+        holder.tvUsername.setText(review.getUsername());
+        holder.tvCountry.setText(review.getCountry());
     }
 
     @Override

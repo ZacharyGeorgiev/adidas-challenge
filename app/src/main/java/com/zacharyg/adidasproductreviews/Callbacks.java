@@ -22,4 +22,8 @@ public class Callbacks {
     public interface PostReviewComplete extends RequestErrorCallback {
         void onSuccess();
     }
+
+    public interface GetRandomUsernameAndCountry {
+        void onSuccess(String username, String country);
+    }
 }
