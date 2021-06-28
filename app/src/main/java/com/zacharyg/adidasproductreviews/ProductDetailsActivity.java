@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,6 +31,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private TextView tvName;
     private TextView tvDescription;
 
+    private Button btnAddReview;
+
     private Product product;
 
     @Override
@@ -44,6 +47,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
         tvPrice       = findViewById(R.id.tv_price);
         tvName        = findViewById(R.id.tv_name);
         tvDescription = findViewById(R.id.tv_description);
+
+        btnAddReview  = findViewById(R.id.btn_add_review);
 
         Serializable serializable = getIntent().getSerializableExtra("product");
         if (serializable != null) {
@@ -61,6 +66,13 @@ public class ProductDetailsActivity extends AppCompatActivity {
         }
 
         ibBack.setOnClickListener(v -> finish());
+
+        btnAddReview.setOnClickListener(v -> {
+            AddReviewBottomSheet addReviewBottomSheet = new AddReviewBottomSheet();
+            if (getFragmentManager() != null) {
+                addReviewBottomSheet.show(getSupportFragmentManager(), "addReviewBottomSheet");
+            }
+        });
 
         updateStatusBarColor();
         loadReviewsFragment();
