@@ -6,14 +6,18 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -29,6 +33,8 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
     private RecyclerView rvProducts;
 
     private LinearLayout llNoResults;
+
+    private FrameLayout flLoading;
 
     private TextView tvNoResults;
 
@@ -52,15 +58,16 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
 
         llNoResults = view.findViewById(R.id.ll_no_results);
 
+        flLoading = view.findViewById(R.id.fl_loading);
+
         tvNoResults = view.findViewById(R.id.tv_no_results);
 
         rvProducts = view.findViewById(R.id.rv_products);
 
         // Configure the recycler view
         rvProducts.setLayoutManager(new LinearLayoutManager(requireContext()));
-//        final DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvProducts.getContext(), DividerItemDecoration.VERTICAL);
-//        rvProducts.addItemDecoration(dividerItemDecoration);
 
+        loadLoadingIndicatorFragment();
         fetchProducts();
 
         return view;
@@ -77,6 +84,16 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
         Intent productDetailsIntent = new Intent(context, ProductDetailsActivity.class);
         productDetailsIntent.putExtra("product", product);
         startActivity(productDetailsIntent);
+    }
+
+    private void loadLoadingIndicatorFragment() {
+        if (getActivity() != null) {
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            LoadingIndicatorFragment loadingIndicatorFragment = new LoadingIndicatorFragment();
+            fragmentTransaction.add(R.id.fl_loading, loadingIndicatorFragment);
+            fragmentTransaction.commit();
+        }
     }
 
     public void filterProducts(String criteria) {
@@ -96,7 +113,18 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
         }
     }
 
+    private void showLoadingIndicator() {
+        flLoading.setVisibility(View.VISIBLE);
+        rvProducts.setVisibility(View.INVISIBLE);
+    }
+
+    private void hideLoadingIndicator() {
+        flLoading.setVisibility(View.GONE);
+        rvProducts.setVisibility(View.VISIBLE);
+    }
+
     private void fetchProducts() {
+        showLoadingIndicator();
         Api.getProducts(context, new Callbacks.GetProductsComplete() {
             @Override
             public void onSuccess(List<Product> products) {
@@ -115,6 +143,9 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
     private void loadProducts(List<Product> products) {
         productsAdapter = new ProductsAdapter(requireContext(), products);
         productsAdapter.setOnProductClickListener(this);
+
         rvProducts.setAdapter(productsAdapter);
+
+        hideLoadingIndicator();
     }
 }
