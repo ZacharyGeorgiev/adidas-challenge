@@ -14,7 +14,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 import java.util.Locale;
@@ -26,6 +30,11 @@ public class ReviewsFragment extends Fragment {
     private TextView tvNoReviews;
 
     private RecyclerView rvReviews;
+
+    private LinearLayout llLoading;
+    private LinearLayout llReviews;
+
+    private ImageView ivLoading;
 
     private ReviewsAdapter reviewsAdapter;
 
@@ -63,6 +72,13 @@ public class ReviewsFragment extends Fragment {
 
         rvReviews = view.findViewById(R.id.rv_reviews);
 
+        llLoading = view.findViewById(R.id.ll_loading);
+        llReviews = view.findViewById(R.id.ll_reviews);
+
+        ivLoading = view.findViewById(R.id.iv_loading);
+
+        Glide.with(context).load(getResources().getIdentifier("test", "drawable", context.getPackageName())).into(ivLoading);
+
         // Configure the recycler view
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);
@@ -87,11 +103,22 @@ public class ReviewsFragment extends Fragment {
         this.context = context;
     }
 
+    private void showLoadingIndicator() {
+        llLoading.setVisibility(View.VISIBLE);
+        llReviews.setVisibility(View.INVISIBLE);
+    }
+
+    private void hideLoadingIndicator() {
+        llLoading.setVisibility(View.GONE);
+        llReviews.setVisibility(View.VISIBLE);
+    }
+
     public void refreshReviews() {
         fetchReviews();
     }
 
     private void fetchReviews() {
+        showLoadingIndicator();
         Api.getReviews(context, new Callbacks.GetReviewsComplete() {
             @Override
             public void onSuccess(List<Review> reviews) {
@@ -128,5 +155,7 @@ public class ReviewsFragment extends Fragment {
         } else {
             reviewsAdapter.updateReviews(reviews);
         }
+
+        hideLoadingIndicator();
     }
 }

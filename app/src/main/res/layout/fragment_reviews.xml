@@ -1,48 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ReviewsFragment">
 
-    <TextView
-        android:id="@+id/tv_count"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sample_review_count"
-        android:textAllCaps="true"
-        android:textSize="18sp"
-        android:fontFamily="@font/itc_avant_garde_bold"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:letterSpacing="0.15"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_reviews"
-        android:visibility="visible"
-        android:layout_marginTop="5dp"
-        android:overScrollMode="never"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-    <TextView
-        android:id="@+id/tv_no_reviews"
-        android:visibility="gone"
-        android:layout_marginTop="17dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
+    <LinearLayout
+        android:id="@+id/ll_reviews"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/no_reviews_prompt"
-        android:textAllCaps="false"
-        android:textSize="14sp"
-        android:fontFamily="@font/itc_avant_garde_regular"
-        android:textColor="@color/adidas_gray"
-        android:letterSpacing="0.1"
-        android:lineSpacingMultiplier="1.35"/>
+        android:orientation="vertical">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/tv_count"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sample_review_count"
+            android:textAllCaps="true"
+            android:textSize="18sp"
+            android:fontFamily="@font/itc_avant_garde_bold"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:letterSpacing="0.15"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_reviews"
+            android:visibility="visible"
+            android:layout_marginTop="5dp"
+            android:overScrollMode="never"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:id="@+id/tv_no_reviews"
+            android:visibility="gone"
+            android:layout_marginTop="17dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/no_reviews_prompt"
+            android:textAllCaps="false"
+            android:textSize="14sp"
+            android:fontFamily="@font/itc_avant_garde_regular"
+            android:textColor="@color/adidas_gray"
+            android:letterSpacing="0.1"
+            android:lineSpacingMultiplier="1.35"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_loading"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center_vertical"
+        android:backgroundTint="@color/adidas_gray">
+        <ImageView
+            android:id="@+id/iv_loading"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/loading_indicator"/>
+
+        <TextView
+            android:layout_marginStart="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading"
+            android:textAllCaps="true"
+            android:textSize="10sp"
+            android:fontFamily="@font/itc_avant_garde_regular"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:letterSpacing="0.25"
+            tools:ignore="SmallSp" />
+    </LinearLayout>
+
+</RelativeLayout>
