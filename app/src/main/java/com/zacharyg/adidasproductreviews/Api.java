@@ -48,18 +48,22 @@ public class Api {
                 .as(new TypeToken<List<Review>>(){})
                 .setCallback((e, reviews) -> {
                     if (reviews != null) {
-                        AtomicInteger additionalDataSetCount = new AtomicInteger();
-                        for (Review review: reviews) {
-                            getRandomUsernameAndCountry(context, (username, country) -> {
-                                review.setUsername(username);
-                                review.setCountry(country);
+                        if (reviews.size() >= 1) {
+                            AtomicInteger additionalDataSetCount = new AtomicInteger();
+                            for (Review review: reviews) {
+                                getRandomUsernameAndCountry(context, (username, country) -> {
+                                    review.setUsername(username);
+                                    review.setCountry(country);
 
-                                additionalDataSetCount.addAndGet(1);
+                                    additionalDataSetCount.addAndGet(1);
 
-                                if (additionalDataSetCount.get() == reviews.size()) {
-                                    callback.onSuccess(reviews);
-                                }
-                            });
+                                    if (additionalDataSetCount.get() == reviews.size()) {
+                                        callback.onSuccess(reviews);
+                                    }
+                                });
+                            }
+                        } else {
+                            callback.onSuccess(reviews);
                         }
                         return;
                     }

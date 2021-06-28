@@ -140,14 +140,14 @@ public class ReviewsFragment extends Fragment {
         int reviewCount = reviews.size();
         if (reviewCount == 0) {
             tvCount.setText(R.string.no_reviews_yet);
-
-            tvNoReviews.setVisibility(View.VISIBLE);
-            rvReviews.setVisibility(View.GONE);
         } else if (reviewCount == 1) {
             tvCount.setText(R.string.one_review);
         } else {
             tvCount.setText(String.format(Locale.ENGLISH, "%d reviews", reviews.size()));
         }
+
+        tvNoReviews.setVisibility(reviewCount == 0 ? View.VISIBLE : View.GONE);
+        rvReviews.setVisibility(reviewCount >= 1 ? View.VISIBLE : View.GONE);
 
         if (reviewsAdapter == null) {
             reviewsAdapter = new ReviewsAdapter(requireContext(), reviews);
