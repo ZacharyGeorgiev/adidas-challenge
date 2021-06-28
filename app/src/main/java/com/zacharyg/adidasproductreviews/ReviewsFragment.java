@@ -22,6 +22,7 @@ public class ReviewsFragment extends Fragment {
     private static final String TAG = "ReviewsFragment";
 
     private TextView tvCount;
+    private TextView tvNoReviews;
 
     private RecyclerView rvReviews;
 
@@ -57,6 +58,7 @@ public class ReviewsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_reviews, container, false);
 
         tvCount = view.findViewById(R.id.tv_count);
+        tvNoReviews = view.findViewById(R.id.tv_no_reviews);
 
         rvReviews = view.findViewById(R.id.rv_reviews);
 
@@ -114,7 +116,17 @@ public class ReviewsFragment extends Fragment {
     }
 
     private void loadReviews(List<Review> reviews) {
-        tvCount.setText(String.format(Locale.ENGLISH, "%d reviews", reviews.size()));
+        int reviewCount = reviews.size();
+        if (reviewCount == 0) {
+            tvCount.setText(R.string.no_reviews_yet);
+
+            tvNoReviews.setVisibility(View.VISIBLE);
+            rvReviews.setVisibility(View.GONE);
+        } else if (reviewCount == 1) {
+            tvCount.setText(R.string.one_review);
+        } else {
+            tvCount.setText(String.format(Locale.ENGLISH, "%d reviews", reviews.size()));
+        }
 
         reviewsAdapter = new ReviewsAdapter(requireContext(), reviews);
         rvReviews.setAdapter(reviewsAdapter);

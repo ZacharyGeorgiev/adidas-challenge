@@ -22,9 +22,24 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_reviews"
+        android:visibility="visible"
         android:layout_marginTop="5dp"
         android:overScrollMode="never"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+    <TextView
+        android:id="@+id/tv_no_reviews"
+        android:visibility="gone"
+        android:layout_marginTop="17dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/no_reviews_prompt"
+        android:textAllCaps="false"
+        android:textSize="14sp"
+        android:fontFamily="@font/itc_avant_garde_regular"
+        android:textColor="@color/adidas_gray"
+        android:letterSpacing="0.1"
+        android:lineSpacingMultiplier="1.35"/>
 
 </LinearLayout>
