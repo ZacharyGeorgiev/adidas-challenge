@@ -5,7 +5,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,11 +15,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
 
 import java.util.List;
 import java.util.Locale;
@@ -31,10 +30,9 @@ public class ReviewsFragment extends Fragment {
 
     private RecyclerView rvReviews;
 
-    private LinearLayout llLoading;
     private LinearLayout llReviews;
 
-    private ImageView ivLoading;
+    private FrameLayout flLoading;
 
     private ReviewsAdapter reviewsAdapter;
 
@@ -43,8 +41,6 @@ public class ReviewsFragment extends Fragment {
     private Context context;
 
     private String productID;
-
-    private List<Review> reviews;
 
     public ReviewsFragment() {
         // Required empty public constructor
@@ -72,12 +68,9 @@ public class ReviewsFragment extends Fragment {
 
         rvReviews = view.findViewById(R.id.rv_reviews);
 
-        llLoading = view.findViewById(R.id.ll_loading);
         llReviews = view.findViewById(R.id.ll_reviews);
 
-        ivLoading = view.findViewById(R.id.iv_loading);
-
-        Glide.with(context).load(getResources().getIdentifier("test", "drawable", context.getPackageName())).into(ivLoading);
+        flLoading = view.findViewById(R.id.fl_loading);
 
         // Configure the recycler view
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
@@ -91,7 +84,7 @@ public class ReviewsFragment extends Fragment {
             productID = getArguments().getString(ARG_PRODUCT_ID);
         }
 
-//        postReview();
+        loadLoadingIndicatorFragment();
         fetchReviews();
 
         return view;
@@ -103,13 +96,23 @@ public class ReviewsFragment extends Fragment {
         this.context = context;
     }
 
+    private void loadLoadingIndicatorFragment() {
+        if (getActivity() != null) {
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            LoadingIndicatorFragment loadingIndicatorFragment = new LoadingIndicatorFragment();
+            fragmentTransaction.add(R.id.fl_loading, loadingIndicatorFragment);
+            fragmentTransaction.commit();
+        }
+    }
+
     private void showLoadingIndicator() {
-        llLoading.setVisibility(View.VISIBLE);
+        flLoading.setVisibility(View.VISIBLE);
         llReviews.setVisibility(View.INVISIBLE);
     }
 
     private void hideLoadingIndicator() {
-        llLoading.setVisibility(View.GONE);
+        flLoading.setVisibility(View.GONE);
         llReviews.setVisibility(View.VISIBLE);
     }
 
@@ -122,8 +125,6 @@ public class ReviewsFragment extends Fragment {
         Api.getReviews(context, new Callbacks.GetReviewsComplete() {
             @Override
             public void onSuccess(List<Review> reviews) {
-                ReviewsFragment.this.reviews = reviews;
-
                 Log.d(TAG, "fetchReviews onSuccess: " + reviews);
 
                 loadReviews(reviews);
