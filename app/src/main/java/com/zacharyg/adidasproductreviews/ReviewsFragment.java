@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -22,6 +24,8 @@ public class ReviewsFragment extends Fragment {
     private TextView tvCount;
 
     private RecyclerView rvReviews;
+
+    private ReviewsAdapter reviewsAdapter;
 
     private static final String ARG_PRODUCT_ID = "product_id";
 
@@ -56,10 +60,16 @@ public class ReviewsFragment extends Fragment {
 
         rvReviews = view.findViewById(R.id.rv_reviews);
 
+        // Configure the recycler view
+        rvReviews.setLayoutManager(new LinearLayoutManager(requireContext()));
+        final DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvReviews.getContext(), DividerItemDecoration.VERTICAL);
+        rvReviews.addItemDecoration(dividerItemDecoration);
+
         if (getArguments() != null) {
             productID = getArguments().getString(ARG_PRODUCT_ID);
         }
 
+//        postReview();
         fetchReviews();
 
         return view;
@@ -79,7 +89,7 @@ public class ReviewsFragment extends Fragment {
 
                 Log.d(TAG, "fetchReviews onSuccess: " + reviews);
 
-                loadReviews();
+                loadReviews(reviews);
             }
 
             @Override
@@ -89,7 +99,24 @@ public class ReviewsFragment extends Fragment {
         }, productID);
     }
 
-    private void loadReviews() {
+    private void postReview() {
+        Api.postReview(context, new Callbacks.PostReviewComplete() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+
+            }
+        }, productID, 3, "The shoes look great but are a little too tight on my feet. Would recommend to size up.");
+    }
+
+    private void loadReviews(List<Review> reviews) {
         tvCount.setText(String.format(Locale.ENGLISH, "%d reviews", reviews.size()));
+
+        reviewsAdapter = new ReviewsAdapter(requireContext(), reviews);
+        rvReviews.setAdapter(reviewsAdapter);
     }
 }

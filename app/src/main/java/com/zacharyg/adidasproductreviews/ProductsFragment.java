@@ -58,8 +58,8 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
 
         // Configure the recycler view
         rvProducts.setLayoutManager(new LinearLayoutManager(requireContext()));
-        final DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvProducts.getContext(), DividerItemDecoration.VERTICAL);
-        rvProducts.addItemDecoration(dividerItemDecoration);
+//        final DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvProducts.getContext(), DividerItemDecoration.VERTICAL);
+//        rvProducts.addItemDecoration(dividerItemDecoration);
 
         fetchProducts();
 

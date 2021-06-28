@@ -55,11 +55,11 @@ public class Api {
                 });
     }
 
-    private void postReview(final Context context,
-                            final Callbacks.PostReviewComplete callback,
-                            String productID,
-                            int rating,
-                            String review) {
+    public static void postReview(final Context context,
+                                  final Callbacks.PostReviewComplete callback,
+                                  String productID,
+                                  int rating,
+                                  String review) {
         JsonObject reviewBody = new JsonObject();
 
         reviewBody.addProperty("productId", productID);
