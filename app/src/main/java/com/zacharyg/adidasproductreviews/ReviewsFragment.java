@@ -87,6 +87,10 @@ public class ReviewsFragment extends Fragment {
         this.context = context;
     }
 
+    public void refreshReviews() {
+        fetchReviews();
+    }
+
     private void fetchReviews() {
         Api.getReviews(context, new Callbacks.GetReviewsComplete() {
             @Override
@@ -105,20 +109,6 @@ public class ReviewsFragment extends Fragment {
         }, productID);
     }
 
-    private void postReview() {
-        Api.postReview(context, new Callbacks.PostReviewComplete() {
-            @Override
-            public void onSuccess() {
-
-            }
-
-            @Override
-            public void onFailure(String errorMessage) {
-
-            }
-        }, productID, 3, "The shoes look great but are a little too tight on my feet. Would recommend to size up.");
-    }
-
     private void loadReviews(List<Review> reviews) {
         int reviewCount = reviews.size();
         if (reviewCount == 0) {
@@ -132,7 +122,11 @@ public class ReviewsFragment extends Fragment {
             tvCount.setText(String.format(Locale.ENGLISH, "%d reviews", reviews.size()));
         }
 
-        reviewsAdapter = new ReviewsAdapter(requireContext(), reviews);
-        rvReviews.setAdapter(reviewsAdapter);
+        if (reviewsAdapter == null) {
+            reviewsAdapter = new ReviewsAdapter(requireContext(), reviews);
+            rvReviews.setAdapter(reviewsAdapter);
+        } else {
+            reviewsAdapter.updateReviews(reviews);
+        }
     }
 }

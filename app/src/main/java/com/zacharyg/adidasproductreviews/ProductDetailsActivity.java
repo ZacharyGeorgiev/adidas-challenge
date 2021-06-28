@@ -35,6 +35,10 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
     private Product product;
 
+    private ReviewsFragment reviewsFragment;
+
+    private static final String TAG = "ProductDetailsActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +72,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         ibBack.setOnClickListener(v -> finish());
 
         btnAddReview.setOnClickListener(v -> {
-            AddReviewBottomSheet addReviewBottomSheet = new AddReviewBottomSheet();
+            AddReviewBottomSheet addReviewBottomSheet = AddReviewBottomSheet.newInstance(product.getId());
             if (getFragmentManager() != null) {
                 addReviewBottomSheet.show(getSupportFragmentManager(), "addReviewBottomSheet");
             }
@@ -81,10 +85,15 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private void loadReviewsFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        ReviewsFragment reviewsFragment = ReviewsFragment.newInstance(product.getId());
+        reviewsFragment = ReviewsFragment.newInstance(product.getId());
         Log.d("Products", "Created the reviews fragment with id: " + product.getId());
         fragmentTransaction.add(R.id.fl_reviews, reviewsFragment);
         fragmentTransaction.commit();
+    }
+
+    public void refreshReviews() {
+        Log.d(TAG, "refreshReviews()");
+        reviewsFragment.refreshReviews();
     }
 
     private void updateStatusBarColor() {
