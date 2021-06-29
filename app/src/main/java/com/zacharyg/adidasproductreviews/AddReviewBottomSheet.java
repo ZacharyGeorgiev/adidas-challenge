@@ -76,7 +76,11 @@ public class AddReviewBottomSheet extends BottomSheetDialogFragment {
             public void afterTextChanged(Editable s) { }
         });
 
-        btnSubmit.setOnClickListener(v ->
+        btnSubmit.setOnClickListener(v -> {
+            if (!Utils.deviceIsConnectedToInternet(context)) {
+                Utils.showNoInternetToast(getActivity());
+                return;
+            }
             Api.postReview(context, new Callbacks.PostReviewComplete() {
                 @Override
                 public void onSuccess() {
@@ -91,16 +95,8 @@ public class AddReviewBottomSheet extends BottomSheetDialogFragment {
                 public void onFailure(String errorMessage) {
                     Log.d(TAG, "postReview onFailure: " + errorMessage);
                 }
-            }, productID, (int) rbScore.getRating(), etText.getText().toString())
-        );
-
-//        btnSubmit.setOnClickListener(v -> {
-//            if (getActivity() != null) {
-//                ((ProductDetailsActivity) getActivity()).refreshReviews();
-//            }
-//
-//            AddReviewBottomSheet.this.dismiss();
-//        });
+            }, productID, (int) rbScore.getRating(), etText.getText().toString());
+        });
 
         return view;
     }

@@ -120,6 +120,10 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
 
     @Override
     public void onProductClick(Product product) {
+        if (!Utils.deviceIsConnectedToInternet(context)) {
+            Utils.showNoInternetToast(getActivity());
+            return;
+        }
         Intent productDetailsIntent = new Intent(context, ProductDetailsActivity.class);
         productDetailsIntent.putExtra("product", product);
         startActivity(productDetailsIntent);
