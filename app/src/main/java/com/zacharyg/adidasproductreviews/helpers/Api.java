@@ -18,8 +18,8 @@ public class Api {
     private static final String TAG = "Api";
     private static final String GET = "GET";
     private static final String POST = "POST";
-//    private static final String IP_ADDRESS = "10.0.2.2";
-    private static final String IP_ADDRESS = "192.168.1.126";
+    private static final String IP_ADDRESS = "10.0.2.2";
+//    private static final String IP_ADDRESS = "192.168.1.126";
     private static final String URL_BASE_PRODUCTS = "http://" + IP_ADDRESS + ":3001";
     private static final String URL_BASE_REVIEWS  = "http://" + IP_ADDRESS + ":3002";
     private static final String URL_RANDOM_USER_API  = "https://randomuser.me/api";
