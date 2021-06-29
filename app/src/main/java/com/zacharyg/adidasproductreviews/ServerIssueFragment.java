@@ -11,8 +11,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class ServerIssueFragment extends Fragment {
-    private Button btnTryAgain;
-
     private static final String ARG_MESSAGE = "message";
 
     private String message;

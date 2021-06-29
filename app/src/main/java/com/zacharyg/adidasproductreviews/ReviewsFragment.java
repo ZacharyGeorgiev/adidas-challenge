@@ -22,7 +22,7 @@ import android.widget.TextView;
 import java.util.List;
 import java.util.Locale;
 
-public class ReviewsFragment extends Fragment {
+public class ReviewsFragment extends Fragment implements ServerIssueFragment.OnReloadListener {
     private static final String TAG = "ReviewsFragment";
 
     private TextView tvCount;
@@ -33,6 +33,7 @@ public class ReviewsFragment extends Fragment {
     private LinearLayout llReviews;
 
     private FrameLayout flLoading;
+    private FrameLayout flServerIssue;
 
     private ReviewsAdapter reviewsAdapter;
 
@@ -71,6 +72,7 @@ public class ReviewsFragment extends Fragment {
         llReviews = view.findViewById(R.id.ll_reviews);
 
         flLoading = view.findViewById(R.id.fl_loading);
+        flServerIssue = view.findViewById(R.id.fl_server_issue);
 
         // Configure the recycler view
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
@@ -84,7 +86,7 @@ public class ReviewsFragment extends Fragment {
             productID = getArguments().getString(ARG_PRODUCT_ID);
         }
 
-        loadLoadingIndicatorFragment();
+        loadFragments();
         fetchReviews();
 
         return view;
@@ -96,22 +98,40 @@ public class ReviewsFragment extends Fragment {
         this.context = context;
     }
 
-    private void loadLoadingIndicatorFragment() {
+    @Override
+    public void onReload() {
+        fetchReviews();
+    }
+
+    private void loadFragments() {
         if (getActivity() != null) {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
             LoadingIndicatorFragment loadingIndicatorFragment = new LoadingIndicatorFragment();
+            ServerIssueFragment serverIssueFragment = ServerIssueFragment.newInstance(getString(R.string.problem_loading_reviews));
+            serverIssueFragment.setOnReloadListener(this);
+
             fragmentTransaction.add(R.id.fl_loading, loadingIndicatorFragment);
+            fragmentTransaction.add(R.id.fl_server_issue, serverIssueFragment);
             fragmentTransaction.commit();
         }
     }
 
+    private void showServerIssueView() {
+        flServerIssue.setVisibility(View.VISIBLE);
+        flLoading.setVisibility(View.GONE);
+        llReviews.setVisibility(View.INVISIBLE);
+    }
+
     private void showLoadingIndicator() {
+        flServerIssue.setVisibility(View.GONE);
         flLoading.setVisibility(View.VISIBLE);
         llReviews.setVisibility(View.INVISIBLE);
     }
 
     private void hideLoadingIndicator() {
+        flServerIssue.setVisibility(View.GONE);
         flLoading.setVisibility(View.GONE);
         llReviews.setVisibility(View.VISIBLE);
     }
@@ -122,6 +142,11 @@ public class ReviewsFragment extends Fragment {
 
     private void fetchReviews() {
         showLoadingIndicator();
+        if (!Utils.deviceIsConnectedToInternet(context)) {
+            Utils.showNoInternetToast(getActivity());
+            showServerIssueView();
+            return;
+        }
         Api.getReviews(context, new Callbacks.GetReviewsComplete() {
             @Override
             public void onSuccess(List<Review> reviews) {

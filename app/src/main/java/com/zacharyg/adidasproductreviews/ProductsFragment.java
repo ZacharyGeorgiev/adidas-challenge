@@ -31,7 +31,7 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
 
     private RecyclerView rvProducts;
 
-    private RelativeLayout rlNoInternet;
+    private RelativeLayout rlServerIssue;
 
     private LinearLayout llNoResults;
 
@@ -57,7 +57,7 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_products, container, false);
 
-        rlNoInternet = view.findViewById(R.id.rl_no_internet);
+        rlServerIssue = view.findViewById(R.id.rl_server_issue);
         llNoResults = view.findViewById(R.id.ll_no_results);
 
         flLoading = view.findViewById(R.id.fl_loading);
@@ -113,10 +113,10 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
 
     @Override
     public void onProductClick(Product product) {
-        if (!Utils.deviceIsConnectedToInternet(context)) {
-            Utils.showNoInternetToast(getActivity());
-            return;
-        }
+//        if (!Utils.deviceIsConnectedToInternet(context)) {
+//            Utils.showNoInternetToast(getActivity());
+//            return;
+//        }
         Intent productDetailsIntent = new Intent(context, ProductDetailsActivity.class);
         productDetailsIntent.putExtra("product", product);
         startActivity(productDetailsIntent);
@@ -159,29 +159,29 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
         }
     }
 
-    private void showNoInternetView() {
+    private void showServerIssueView() {
         flLoading.setVisibility(View.GONE);
         rvProducts.setVisibility(View.INVISIBLE);
-        rlNoInternet.setVisibility(View.VISIBLE);
+        rlServerIssue.setVisibility(View.VISIBLE);
     }
 
     private void showLoadingIndicator() {
         flLoading.setVisibility(View.VISIBLE);
         rvProducts.setVisibility(View.INVISIBLE);
-        rlNoInternet.setVisibility(View.GONE);
+        rlServerIssue.setVisibility(View.GONE);
     }
 
     private void hideLoadingIndicator() {
         flLoading.setVisibility(View.GONE);
         rvProducts.setVisibility(View.VISIBLE);
-        rlNoInternet.setVisibility(View.GONE);
+        rlServerIssue.setVisibility(View.GONE);
     }
 
     private void fetchProducts() {
         showLoadingIndicator();
         if (!Utils.deviceIsConnectedToInternet(context)) {
             Utils.showNoInternetToast(getActivity());
-            showNoInternetView();
+            showServerIssueView();
             return;
         }
         Api.getProducts(context, new Callbacks.GetProductsComplete() {
@@ -195,7 +195,7 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
             @Override
             public void onFailure(String errorMessage) {
                 Log.d(TAG, "fetchProducts: onFailure - " + errorMessage);
-                showNoInternetView();
+                showServerIssueView();
             }
         });
     }
