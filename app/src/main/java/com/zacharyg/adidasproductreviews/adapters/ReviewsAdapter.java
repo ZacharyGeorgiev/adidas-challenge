@@ -17,6 +17,9 @@ import com.zacharyg.adidasproductreviews.models.Review;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Adapter used to manage the data of the reviews recycler view in {@link com.zacharyg.adidasproductreviews.fragments.ReviewsFragment}
+ */
 public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHolder> {
     private final Context context;
 
@@ -28,6 +31,10 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
         this.reviews.addAll(reviews);
     }
 
+    /**
+     * Updates the list of reviews
+     * @param reviews - the new list that the adapter should use
+     */
     public void updateReviews(List<Review> reviews) {
         this.reviews.clear();
         this.reviews.addAll(reviews);
@@ -45,10 +52,13 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
     public void onBindViewHolder(@NonNull ReviewsAdapter.ViewHolder holder, int position) {
         Review review = reviews.get(position);
 
+        // Show the score
         holder.rbScore.setRating(review.getRating());
 
+        // We consider a product is recommended only if a user has rated it with 4 or 5 stars
         holder.llRecommended.setVisibility(review.getRating() < 4 ? View.GONE : View.VISIBLE);
 
+        // Show the review information
         holder.tvText.setText(review.getText());
         holder.tvUsername.setText(review.getUsername());
         holder.tvCountry.setText(review.getCountry());

@@ -33,6 +33,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
+/**
+ * Fragment used to display all available products
+ */
 public class ProductsFragment extends Fragment implements ProductsAdapter.OnProductClickListener, ServerIssueFragment.OnReloadListener {
     private static final String TAG = "ProductsFragment";
 
@@ -47,6 +50,8 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
     private FrameLayout flLoading;
 
     private TextView tvNoResults;
+
+    private LinearLayoutManager layoutManager;
 
     private ProductsAdapter productsAdapter;
 
@@ -68,20 +73,36 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_products, container, false);
 
+        setupViews(view);
+        setupListeners();
+        loadFragments();
+        fetchProducts();
+
+        return view;
+    }
+
+    private void setupViews(View view) {
+        // Create the layout manager for the recycler view
+        layoutManager = new LinearLayoutManager(requireContext());
+
         rlServerIssue = view.findViewById(R.id.rl_server_issue);
-        llNoResults = view.findViewById(R.id.ll_no_results);
 
-        flLoading = view.findViewById(R.id.fl_loading);
+        llNoResults   = view.findViewById(R.id.ll_no_results);
 
-        tvNoResults = view.findViewById(R.id.tv_no_results);
+        flLoading     = view.findViewById(R.id.fl_loading);
 
-        rvProducts = view.findViewById(R.id.rv_products);
+        tvNoResults   = view.findViewById(R.id.tv_no_results);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
+        rvProducts    = view.findViewById(R.id.rv_products);
 
         // Configure the recycler view
         rvProducts.setLayoutManager(layoutManager);
+    }
 
+    /**
+     * Setup the onScroll listener for the recycler view
+     */
+    private void setupListeners() {
         rvProducts.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -93,17 +114,24 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
 
                         if (layoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
                             if (justLaunched) {
+                                /* When the app is launched the onScroll is triggered and since the first item is visible
+                                 * this clause will be entered. Since we don't want to move the products layout before the user
+                                 * has scrolled we don't do anything the first time this clause is entered.
+                                 */
                                 justLaunched = false;
                                 return;
                             }
+                            // If we are at the top of the page we have to move the product layout below the top bar to prevent hidden products
                             productsActivity.moveProducts(true);
                             return;
                         }
 
                         if (dy > 0) {
+                            // The user scrolled down -> hide the top bar and move the product layout up to take up the full screen
                             productsActivity.animateTopBar(false);
                             productsActivity.moveProducts(false);
                         } else if (dy < 0) {
+                            // The user scrolled up -> show the top bar
                             productsActivity.animateTopBar(true);
                         }
                     } catch (Exception ex) {
@@ -113,11 +141,6 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
 
             }
         });
-
-        loadFragments();
-        fetchProducts();
-
-        return view;
     }
 
     @Override
@@ -128,12 +151,15 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
 
     @Override
     public void onProductClick(Product product) {
+        // Check if internet is available before showing the product details activity
         if (Utils.internetIsUnavailable(context)) {
             Utils.showNoInternetToast(getActivity());
             return;
         }
         Intent productDetailsIntent = new Intent(context, ProductDetailsActivity.class);
+        // Pass the product which was clicked to the product details activity
         productDetailsIntent.putExtra("product", product);
+        // Start the product details activity
         startActivity(productDetailsIntent);
     }
 
@@ -142,6 +168,9 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
         fetchProducts();
     }
 
+    /**
+     * Load the loading indicator and server issue fragments
+     */
     private void loadFragments() {
         if (getActivity() != null) {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -157,6 +186,10 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
         }
     }
 
+    /**
+     * Filter the product list based on a criteria
+     * @param criteria - the search query of the user
+     */
     public void filterProducts(String criteria) {
         List<Product> filteredProducts = products.stream()
                 .filter(product -> product.getName().toLowerCase().contains(criteria) || product.getDescription().toLowerCase().contains(criteria))
@@ -164,36 +197,51 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
         productsAdapter.updateProducts(filteredProducts);
 
         if (filteredProducts.size() == 0) {
+            // No products were found matching the criteria -> show the 'no results' view
             tvNoResults.setText(String.format(Locale.ENGLISH, "%s '%s'.", getString(R.string.no_results), criteria));
 
             llNoResults.setVisibility(View.VISIBLE);
             rvProducts.setVisibility(View.GONE);
         } else {
+            // Products that match the search criteria exist -> hide the 'no results' view
             llNoResults.setVisibility(View.GONE);
             rvProducts.setVisibility(View.VISIBLE);
         }
     }
 
+    /**
+     * Shows the view used when an issue has occurred (no internet/failure to connect to the server)
+     */
     private void showServerIssueView() {
         flLoading.setVisibility(View.GONE);
         rvProducts.setVisibility(View.INVISIBLE);
         rlServerIssue.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Shows the loading indicator fragment
+     */
     private void showLoadingIndicator() {
         flLoading.setVisibility(View.VISIBLE);
         rvProducts.setVisibility(View.INVISIBLE);
         rlServerIssue.setVisibility(View.GONE);
     }
 
+    /**
+     * Hides the loading indicator fragment
+     */
     private void hideLoadingIndicator() {
         flLoading.setVisibility(View.GONE);
         rvProducts.setVisibility(View.VISIBLE);
         rlServerIssue.setVisibility(View.GONE);
     }
 
+    /**
+     * Fetches the product list from the server
+     */
     private void fetchProducts() {
         showLoadingIndicator();
+        // Check if internet is available
         if (Utils.internetIsUnavailable(context)) {
             Utils.showNoInternetToast(getActivity());
             showServerIssueView();
@@ -204,6 +252,7 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
             public void onSuccess(List<Product> products) {
                 ProductsFragment.this.products = products;
 
+                // Show the product list
                 loadProducts(products);
             }
 
@@ -215,12 +264,17 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
         });
     }
 
+    /**
+     * Displays a list of products in the recycler view
+     * @param products - the list of products to display
+     */
     private void loadProducts(List<Product> products) {
         productsAdapter = new ProductsAdapter(requireContext(), products);
         productsAdapter.setOnProductClickListener(this);
 
         rvProducts.setAdapter(productsAdapter);
 
+        // Hide the loading indicator once the products have been loaded
         hideLoadingIndicator();
     }
 }

@@ -29,6 +29,9 @@ import com.zacharyg.adidasproductreviews.models.Review;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Fragment used to display all reviews for a product
+ */
 public class ReviewsFragment extends Fragment implements ServerIssueFragment.OnReloadListener {
     private static final String TAG = "ReviewsFragment";
 
@@ -54,6 +57,10 @@ public class ReviewsFragment extends Fragment implements ServerIssueFragment.OnR
         // Required empty public constructor
     }
 
+    /**
+     * Creates a new instance of the fragment
+     * @param productID - the ID of the product to display the reviews for
+     */
     public static ReviewsFragment newInstance(String productID) {
         ReviewsFragment fragment = new ReviewsFragment();
         Bundle args = new Bundle();
@@ -112,6 +119,9 @@ public class ReviewsFragment extends Fragment implements ServerIssueFragment.OnR
         pagerSnapHelper.attachToRecyclerView(rvReviews);
     }
 
+    /**
+     * Load the loading indicator and server issue fragments
+     */
     private void loadFragments() {
         if (getActivity() != null) {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -127,18 +137,27 @@ public class ReviewsFragment extends Fragment implements ServerIssueFragment.OnR
         }
     }
 
+    /**
+     * Shows the view used when an issue has occurred (no internet/failure to connect to the server)
+     */
     private void showServerIssueView() {
         flServerIssue.setVisibility(View.VISIBLE);
         flLoading.setVisibility(View.GONE);
         llReviews.setVisibility(View.INVISIBLE);
     }
 
+    /**
+     * Shows the loading indicator fragment
+     */
     private void showLoadingIndicator() {
         flServerIssue.setVisibility(View.GONE);
         flLoading.setVisibility(View.VISIBLE);
         llReviews.setVisibility(View.INVISIBLE);
     }
 
+    /**
+     * Hides the loading indicator fragment
+     */
     private void hideLoadingIndicator() {
         flServerIssue.setVisibility(View.GONE);
         flLoading.setVisibility(View.GONE);
@@ -149,8 +168,12 @@ public class ReviewsFragment extends Fragment implements ServerIssueFragment.OnR
         fetchReviews();
     }
 
+    /**
+     * Fetches the review list from the server
+     */
     private void fetchReviews() {
         showLoadingIndicator();
+        // Check if internet is available
         if (Utils.internetIsUnavailable(context)) {
             Utils.showNoInternetToast(getActivity());
             showServerIssueView();
@@ -161,18 +184,25 @@ public class ReviewsFragment extends Fragment implements ServerIssueFragment.OnR
             public void onSuccess(List<Review> reviews) {
                 Log.d(TAG, "fetchReviews onSuccess: " + reviews);
 
+                // Show the reviews
                 loadReviews(reviews);
             }
 
             @Override
             public void onFailure(String errorMessage) {
                 Log.d(TAG, "fetchReviews onFailure: " + errorMessage);
+                showServerIssueView();
             }
         }, productID);
     }
 
+    /**
+     * Displays a list of reviews in the recycler view
+     * @param reviews - the list of reviews to display
+     */
     private void loadReviews(List<Review> reviews) {
         int reviewCount = reviews.size();
+        // Set the appropriate text for the count text view
         if (reviewCount == 0) {
             tvCount.setText(R.string.no_reviews_yet);
         } else if (reviewCount == 1) {
@@ -181,7 +211,9 @@ public class ReviewsFragment extends Fragment implements ServerIssueFragment.OnR
             tvCount.setText(String.format(Locale.ENGLISH, "%d reviews", reviews.size()));
         }
 
+        // Show/hide the 'No reviews' view based on the number of reviews
         tvNoReviews.setVisibility(reviewCount == 0 ? View.VISIBLE : View.GONE);
+        // Show/hide the reviews recycler view based on the number of reviews
         rvReviews.setVisibility(reviewCount >= 1 ? View.VISIBLE : View.GONE);
 
         if (reviewsAdapter == null) {

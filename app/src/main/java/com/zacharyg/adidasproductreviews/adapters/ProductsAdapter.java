@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Adapter used to manage the data of the products recycler view in {@link com.zacharyg.adidasproductreviews.fragments.ProductsFragment}
+ */
 public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHolder> {
     private final Context context;
 
@@ -32,10 +35,18 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
         this.products.addAll(products);
     }
 
+    /**
+     * Sets the listener which will be called when a product is selected
+     * @param listener - a class implementing the OnProductClickListener that will respond to product clicks
+     */
     public void setOnProductClickListener(@NonNull final OnProductClickListener listener) {
         this.onProductClickListener = listener;
     }
 
+    /**
+     * Updates the list of products
+     * @param products - the new list that the adapter should use
+     */
     public void updateProducts(List<Product> products) {
         this.products.clear();
         this.products.addAll(products);
@@ -53,10 +64,12 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
     public void onBindViewHolder(@NonNull ProductsAdapter.ViewHolder holder, int position) {
         Product product = products.get(position);
 
+        // Load the product image into the image view
         Glide.with(context)
                 .load(product.getImageUrl())
                 .into(holder.ivProduct);
 
+        // Show the product information
         holder.tvPrice.setText(String.format(Locale.ENGLISH,"%s%d.00", product.getCurrency(), product.getPrice()));
         holder.tvName.setText(product.getName());
         holder.tvDescription.setText(product.getDescription());

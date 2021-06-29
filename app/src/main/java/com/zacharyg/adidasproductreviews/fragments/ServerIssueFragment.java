@@ -12,6 +12,9 @@ import android.widget.TextView;
 
 import com.zacharyg.adidasproductreviews.R;
 
+/**
+ * Fragment used to show an error view when a server issue has occurred
+ */
 public class ServerIssueFragment extends Fragment {
     private static final String ARG_MESSAGE = "message";
 
@@ -25,6 +28,10 @@ public class ServerIssueFragment extends Fragment {
         // Required empty public constructor
     }
 
+    /**
+     * Creates a new instance of the fragment
+     * @param message - the message to display
+     */
     public static ServerIssueFragment newInstance(String message) {
         ServerIssueFragment fragment = new ServerIssueFragment();
         Bundle args = new Bundle();
@@ -33,6 +40,10 @@ public class ServerIssueFragment extends Fragment {
         return fragment;
     }
 
+    /**
+     * Sets the listener which will be called when the 'Try again' button is clicked
+     * @param listener - a class implementing the OnReloadListener that will respond to 'Try again' button clicks
+     */
     public void setOnReloadListener(OnReloadListener listener) {
         this.listener = listener;
     }

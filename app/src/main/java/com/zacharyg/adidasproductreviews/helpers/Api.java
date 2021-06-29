@@ -27,6 +27,11 @@ public class Api {
     private static final String[] FALLBACK_USERNAMES = { "Omenforcer", "Flamingoat", "Vulturret", "Tangoddess", "AmusedPorcupine", "NaiveFry", "HilariousBison", "FrightenedFury", "FalseLeaf", "MorningCub" };
     private static final String[] FALLBACK_COUNTRIES = { "Russia", "Ukraine", "France", "Spain", "Sweden", "Norway", "Germany", "Finland", "Netherlands", "United Kingdom" };
 
+    /**
+     * Performs a GET request to the server to fetch the product list
+     * @param context - the context to be used for the request
+     * @param callback - the callback where the response will be handled
+     */
     public static void getProducts(final Context context,
                                    final Callbacks.GetProductsComplete callback) {
         Log.d(TAG, "getProducts: " + URL_BASE_PRODUCTS + "/product");
@@ -45,6 +50,12 @@ public class Api {
                 });
     }
 
+    /**
+     * Performs a GET request to the server to fetch the list of reviews for a product
+     * @param context - the context to be used for the request
+     * @param callback - the callback where the response will be handled
+     * @param productID - the ID of the product for which the reviews should be fetched
+     */
     public static void getReviews(final Context context,
                                   final Callbacks.GetReviewsComplete callback,
                                   String productID) {
@@ -59,6 +70,7 @@ public class Api {
                         if (reviews.size() >= 1) {
                             AtomicInteger additionalDataSetCount = new AtomicInteger();
                             for (Review review: reviews) {
+                                // Obtain a random username and country for each review to make it look more personal
                                 getRandomUsernameAndCountry(context, (username, country) -> {
                                     review.setUsername(username);
                                     review.setCountry(country);
@@ -66,11 +78,13 @@ public class Api {
                                     additionalDataSetCount.addAndGet(1);
 
                                     if (additionalDataSetCount.get() == reviews.size()) {
+                                        // Pass the reviews back to the callback once the additional data has been set for all of them
                                         callback.onSuccess(reviews);
                                     }
                                 });
                             }
                         } else {
+                            // The review list is empty so there is no need to obtain additional data
                             callback.onSuccess(reviews);
                         }
                         return;
@@ -80,6 +94,11 @@ public class Api {
                 });
     }
 
+    /**
+     * Makes a GET request to a random user API and handles the JSON response to get a username and a country
+     * @param context - the context to be used for the request
+     * @param callback - the callback where the username and country are passed
+     */
     private static void getRandomUsernameAndCountry(Context context,
                                                     Callbacks.GetRandomUsernameAndCountry callback) {
         Ion.with(context)
@@ -101,21 +120,38 @@ public class Api {
                             callback.onSuccess(getRandomUsername(), getRandomCountry());
                         }
                     } else {
+                        // In case the call fails we get a random username and country from a hardcoded list
                         callback.onSuccess(getRandomUsername(), getRandomCountry());
                     }
                 });
     }
 
+    /**
+     * Selects a random username from the fallback usernames list and returns it
+     * @return - a random username
+     */
     private static String getRandomUsername() {
         ThreadLocalRandom random = ThreadLocalRandom.current();
         return FALLBACK_USERNAMES[random.nextInt(0, FALLBACK_USERNAMES.length)];
     }
 
+    /**
+     * Selects a random country from the fallback countries list and returns it
+     * @return - a random country
+     */
     private static String getRandomCountry() {
         ThreadLocalRandom random = ThreadLocalRandom.current();
         return FALLBACK_COUNTRIES[random.nextInt(0, FALLBACK_COUNTRIES.length)];
     }
 
+    /**
+     * Performs a POST request to the server to post a review of a product
+     * @param context - the context to be used for the request
+     * @param callback - the callback where the response will be handled
+     * @param productID - the product for which to post a review
+     * @param rating - the star rating (1-5) for the product
+     * @param review - the text of the review
+     */
     public static void postReview(final Context context,
                                   final Callbacks.PostReviewComplete callback,
                                   String productID,

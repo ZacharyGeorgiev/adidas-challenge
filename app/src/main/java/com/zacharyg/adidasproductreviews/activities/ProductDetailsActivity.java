@@ -67,6 +67,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
         tvDescription.setText(product.getDescription());
     }
 
+    /**
+     * Sets the onClick listeners for the 'Back' and 'Add review' buttons
+     */
     private void setupListeners() {
         ibBack.setOnClickListener(v -> finish());
 
@@ -78,6 +81,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Loads the reviews fragment into its designated container
+     */
     private void loadReviewsFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -92,6 +98,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
         reviewsFragment.refreshReviews();
     }
 
+    /**
+     * Changes the status bar color to match with the product image background
+     */
     private void updateStatusBarColor() {
         Window window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);

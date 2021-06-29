@@ -14,6 +14,9 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.zacharyg.adidasproductreviews.R;
 
+/**
+ * Fragment used to show a loading indicator
+ */
 public class LoadingIndicatorFragment extends Fragment {
 
     private Context context;
@@ -32,6 +35,7 @@ public class LoadingIndicatorFragment extends Fragment {
 
         ImageView ivLoading = view.findViewById(R.id.iv_loading);
 
+        // Load the indicator gif into the image view
         Glide.with(context).load(getResources().getIdentifier("loading_indicator", "drawable", context.getPackageName())).into(ivLoading);
 
         return view;

@@ -25,6 +25,9 @@ import com.zacharyg.adidasproductreviews.activities.ProductDetailsActivity;
 import com.zacharyg.adidasproductreviews.helpers.Api;
 import com.zacharyg.adidasproductreviews.helpers.Utils;
 
+/**
+ * Bottom sheet dialog used to create product reviews
+ */
 public class AddReviewBottomSheet extends BottomSheetDialogFragment {
     private RatingBar rbScore;
 
@@ -39,6 +42,10 @@ public class AddReviewBottomSheet extends BottomSheetDialogFragment {
 
     private String productID;
 
+    /**
+     * Creates a new instance of the dialog
+     * @param productID - the product for which the review will be created
+     */
     public static AddReviewBottomSheet newInstance(String productID) {
         AddReviewBottomSheet addReviewBottomSheet = new AddReviewBottomSheet();
         Bundle args = new Bundle();
@@ -90,6 +97,7 @@ public class AddReviewBottomSheet extends BottomSheetDialogFragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Only allow submitting of reviews when the user has written something and selected a review score
                 btnSubmit.setEnabled(s.length() > 4 && rbScore.getRating() >= 1);
             }
 
@@ -98,6 +106,7 @@ public class AddReviewBottomSheet extends BottomSheetDialogFragment {
         });
 
         btnSubmit.setOnClickListener(v -> {
+            // Check if internet is available before attempting to post the review
             if (Utils.internetIsUnavailable(context)) {
                 Utils.showNoInternetToast(getActivity());
                 return;
@@ -111,9 +120,11 @@ public class AddReviewBottomSheet extends BottomSheetDialogFragment {
             @Override
             public void onSuccess() {
                 if (getActivity() != null) {
+                    // Refresh the reviews after the new review has been posted successfully
                     ((ProductDetailsActivity) getActivity()).refreshReviews();
                 }
 
+                // Dismiss the bottom sheet
                 AddReviewBottomSheet.this.dismiss();
             }
 
