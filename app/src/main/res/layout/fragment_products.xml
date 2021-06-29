@@ -51,66 +51,25 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="70dp"
-        android:background="@color/white">
+        android:visibility="gone"
+        android:background="@color/white"
+        android:gravity="center">
 
-        <LinearLayout
-            android:visibility="visible"
-            android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/iv_plug"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_plug"
+            android:layout_centerHorizontal="true"/>
+
+        <FrameLayout
+            android:layout_marginTop="30dp"
+            android:id="@+id/fl_server_issue"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            android:layout_centerInParent="true">
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/ic_plug"/>
-
-            <TextView
-                android:id="@+id/tv_name"
-                android:layout_marginTop="40dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/connection_issue"
-                android:textAllCaps="true"
-                android:textSize="12sp"
-                android:fontFamily="@font/itc_avant_garde_medium"
-                android:textColor="@color/black"
-                android:letterSpacing="0.15"/>
-
-            <TextView
-                android:id="@+id/tv_description"
-                android:layout_marginTop="12dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/problem_loading_section"
-                android:textAllCaps="false"
-                android:textSize="11sp"
-                android:fontFamily="@font/itc_avant_garde_regular"
-                android:textColor="@color/adidas_gray"
-                android:letterSpacing="0.1"
-                android:lineSpacingMultiplier="1.6"
-                tools:ignore="SmallSp" />
-
-            <Button
-                android:id="@+id/btn_reload"
-                android:layout_marginTop="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:textColor="@color/black"
-                android:text="@string/try_again"
-                android:fontFamily="@font/itc_avant_garde_regular"
-                android:textSize="12sp"
-                android:textStyle=""
-                android:letterSpacing="0.15"
-                android:background="@android:color/transparent"/>
-        </LinearLayout>
+            android:layout_below="@id/iv_plug"/>
 
     </RelativeLayout>
-
-
 
     <FrameLayout
         android:id="@+id/fl_loading"

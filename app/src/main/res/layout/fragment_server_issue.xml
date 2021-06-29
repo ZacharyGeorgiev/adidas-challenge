@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="20dp"
+    tools:context=".ServerIssueFragment">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/connection_issue"
+        android:textAllCaps="true"
+        android:textSize="12sp"
+        android:fontFamily="@font/itc_avant_garde_medium"
+        android:textColor="@color/black"
+        android:letterSpacing="0.15"/>
+
+    <TextView
+        android:id="@+id/tv_message"
+        android:layout_marginTop="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/problem_loading_section"
+        android:textAllCaps="false"
+        android:textSize="11sp"
+        android:fontFamily="@font/itc_avant_garde_regular"
+        android:textColor="@color/adidas_gray"
+        android:letterSpacing="0.1"
+        android:lineSpacingMultiplier="1.6"
+        tools:ignore="SmallSp" />
+
+    <Button
+        android:id="@+id/btn_try_again"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:textColor="@color/black"
+        android:text="@string/try_again"
+        android:fontFamily="@font/itc_avant_garde_regular"
+        android:textSize="12sp"
+        android:textStyle=""
+        android:letterSpacing="0.15"
+        android:background="@android:color/transparent"/>
+
+</LinearLayout>

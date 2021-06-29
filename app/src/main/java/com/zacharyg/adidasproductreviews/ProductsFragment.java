@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -25,7 +24,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-public class ProductsFragment extends Fragment implements ProductsAdapter.OnProductClickListener {
+public class ProductsFragment extends Fragment implements ProductsAdapter.OnProductClickListener, ServerIssueFragment.OnReloadListener {
     private static final String TAG = "ProductsFragment";
 
     private Context context;
@@ -39,8 +38,6 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
     private FrameLayout flLoading;
 
     private TextView tvNoResults;
-
-    private Button btnReload;
 
     private ProductsAdapter productsAdapter;
 
@@ -68,8 +65,6 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
         tvNoResults = view.findViewById(R.id.tv_no_results);
 
         rvProducts = view.findViewById(R.id.rv_products);
-
-        btnReload = view.findViewById(R.id.btn_reload);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
 
@@ -104,9 +99,7 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
             }
         });
 
-        btnReload.setOnClickListener(v -> fetchProducts());
-
-        loadLoadingIndicatorFragment();
+        loadFragments();
         fetchProducts();
 
         return view;
@@ -129,12 +122,22 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
         startActivity(productDetailsIntent);
     }
 
-    private void loadLoadingIndicatorFragment() {
+    @Override
+    public void onReload() {
+        fetchProducts();
+    }
+
+    private void loadFragments() {
         if (getActivity() != null) {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
             LoadingIndicatorFragment loadingIndicatorFragment = new LoadingIndicatorFragment();
+            ServerIssueFragment serverIssueFragment = ServerIssueFragment.newInstance(getString(R.string.problem_loading_section));
+            serverIssueFragment.setOnReloadListener(this);
+
             fragmentTransaction.add(R.id.fl_loading, loadingIndicatorFragment);
+            fragmentTransaction.add(R.id.fl_server_issue, serverIssueFragment);
             fragmentTransaction.commit();
         }
     }
@@ -192,6 +195,7 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
             @Override
             public void onFailure(String errorMessage) {
                 Log.d(TAG, "fetchProducts: onFailure - " + errorMessage);
+                showNoInternetView();
             }
         });
     }
