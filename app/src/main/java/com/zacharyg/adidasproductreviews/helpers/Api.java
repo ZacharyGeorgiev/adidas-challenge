@@ -24,6 +24,9 @@ public class Api {
     private static final String URL_BASE_REVIEWS  = "http://" + IP_ADDRESS + ":3002";
     private static final String URL_RANDOM_USER_API  = "https://randomuser.me/api";
 
+    private static final String[] FALLBACK_USERNAMES = { "Omenforcer", "Flamingoat", "Vulturret", "Tangoddess", "AmusedPorcupine", "NaiveFry", "HilariousBison", "FrightenedFury", "FalseLeaf", "MorningCub" };
+    private static final String[] FALLBACK_COUNTRIES = { "Russia", "Ukraine", "France", "Spain", "Sweden", "Norway", "Germany", "Finland", "Netherlands", "United Kingdom" };
+
     public static void getProducts(final Context context,
                                    final Callbacks.GetProductsComplete callback) {
         Log.d(TAG, "getProducts: " + URL_BASE_PRODUCTS + "/product");
@@ -85,23 +88,32 @@ public class Api {
                 .withResponse()
                 .setCallback((e1, result) -> {
                     if (result != null) {
-                        JsonObject results = result.getResult().get("results").getAsJsonArray().get(0).getAsJsonObject();
-                        JsonObject location = results.get("location").getAsJsonObject();
-                        JsonObject login = results.get("login").getAsJsonObject();
+                        try {
+                            JsonObject results = result.getResult().get("results").getAsJsonArray().get(0).getAsJsonObject();
+                            JsonObject location = results.get("location").getAsJsonObject();
+                            JsonObject login = results.get("login").getAsJsonObject();
 
-                        String username = login.get("username").getAsString();
-                        String country = location.get("country").getAsString();
+                            String username = login.get("username").getAsString();
+                            String country = location.get("country").getAsString();
 
-                        callback.onSuccess(username, country);
+                            callback.onSuccess(username, country);
+                        } catch (Exception ex) {
+                            callback.onSuccess(getRandomUsername(), getRandomCountry());
+                        }
                     } else {
-                        String[] fallbackUsernames = { "Omenforcer", "Flamingoat", "Vulturret", "Tangoddess", "AmusedPorcupine", "NaiveFry", "HilariousBison", "FrightenedFury", "FalseLeaf", "MorningCub" };
-                        String[] fallbackCountries = { "Russia", "Ukraine", "France", "Spain", "Sweden", "Norway", "Germany", "Finland", "Netherlands", "United Kingdom" };
-
-                        ThreadLocalRandom random = ThreadLocalRandom.current();
-                        callback.onSuccess(fallbackUsernames[random.nextInt(0, fallbackUsernames.length)],
-                                           fallbackCountries[random.nextInt(0, fallbackCountries.length)]);
+                        callback.onSuccess(getRandomUsername(), getRandomCountry());
                     }
                 });
+    }
+
+    private static String getRandomUsername() {
+        ThreadLocalRandom random = ThreadLocalRandom.current();
+        return FALLBACK_USERNAMES[random.nextInt(0, FALLBACK_USERNAMES.length)];
+    }
+
+    private static String getRandomCountry() {
+        ThreadLocalRandom random = ThreadLocalRandom.current();
+        return FALLBACK_COUNTRIES[random.nextInt(0, FALLBACK_COUNTRIES.length)];
     }
 
     public static void postReview(final Context context,
