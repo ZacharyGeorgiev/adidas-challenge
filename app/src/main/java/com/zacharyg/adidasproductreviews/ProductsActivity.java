@@ -23,8 +23,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 public class ProductsActivity extends AppCompatActivity {
-    private static final String TAG = "ProductsActivity";
-
     private RelativeLayout rlTopBar;
 
     private FrameLayout flProducts;
@@ -52,6 +50,14 @@ public class ProductsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_products);
 
+        setupViews();
+        initVariables();
+        setupListeners();
+        loadInitialSearchBarAnimation();
+        loadProductsFragment();
+    }
+
+    private void setupViews() {
         rlTopBar = findViewById(R.id.rl_top_bar);
 
         flProducts = findViewById(R.id.fl_products);
@@ -59,17 +65,14 @@ public class ProductsActivity extends AppCompatActivity {
         ivSearch = findViewById(R.id.iv_search);
         etSearch = findViewById(R.id.et_search);
 
+        etSearch.setEnabled(false);
+    }
+
+    private void initVariables() {
         avdIconToBar = (AnimatedVectorDrawable) ResourcesCompat.getDrawable(getResources(), R.drawable.anim_icon_to_bar, null);
         avdBarToIcon = (AnimatedVectorDrawable) ResourcesCompat.getDrawable(getResources(), R.drawable.anim_bar_to_icon, null);
 
         interpolator = AnimationUtils.loadInterpolator(this, android.R.interpolator.linear_out_slow_in);
-
-        etSearch.setEnabled(false);
-
-        setupListeners();
-
-        loadInitialSearchBarAnimation();
-        loadProductsFragment();
     }
 
     private void loadProductsFragment() {
@@ -125,31 +128,11 @@ public class ProductsActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
-        rlTopBar.setOnClickListener(v -> {
-            if (etSearch.getText().length() == 0) {
-                hideSearchBar();
-            }
-            etSearch.clearFocus();
-            ivSearch.requestFocus();
-        });
+        rlTopBar.setOnClickListener(v -> onTopBarClick());
 
-        ivSearch.setOnClickListener(v -> {
-            if (!searchBarExpanded) {
-                showSearchBar();
-            } else {
-                etSearch.requestFocus();
-            }
-        });
+        ivSearch.setOnClickListener(v -> onSearchClick());
 
-        etSearch.setOnFocusChangeListener((v, hasFocus) -> {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (hasFocus) {
-                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
-            }
-            else {
-                imm.hideSoftInputFromWindow(v.getWindowToken(),0);
-            }
-        });
+        etSearch.setOnFocusChangeListener(this::onFocusChange);
 
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -172,6 +155,32 @@ public class ProductsActivity extends AppCompatActivity {
             }
             return false;
         });
+    }
+
+    private void onTopBarClick() {
+        if (etSearch.getText().length() == 0) {
+            hideSearchBar();
+        }
+        etSearch.clearFocus();
+        ivSearch.requestFocus();
+    }
+
+    private void onSearchClick() {
+        if (!searchBarExpanded) {
+            showSearchBar();
+        } else {
+            etSearch.requestFocus();
+        }
+    }
+
+    private void onFocusChange(View view, boolean hasFocus) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (hasFocus) {
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+        }
+        else {
+            imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+        }
     }
 
     private void loadInitialSearchBarAnimation() {

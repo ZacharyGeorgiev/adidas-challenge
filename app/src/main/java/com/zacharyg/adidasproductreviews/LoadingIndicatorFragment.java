@@ -17,8 +17,7 @@ public class LoadingIndicatorFragment extends Fragment {
 
     private Context context;
 
-    public LoadingIndicatorFragment() {
-    }
+    public LoadingIndicatorFragment() { }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

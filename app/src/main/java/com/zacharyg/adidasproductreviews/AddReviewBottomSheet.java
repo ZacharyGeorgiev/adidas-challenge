@@ -51,9 +51,22 @@ public class AddReviewBottomSheet extends BottomSheetDialogFragment {
             productID = getArguments().getString(ARG_PRODUCT_ID);
         }
 
-        rbScore = view.findViewById(R.id.rb_score);
+        setupViews(view);
+        setupListeners();
 
-        etText = view.findViewById(R.id.et_text);
+        return view;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        this.context = context;
+    }
+
+    private void setupViews(View view) {
+        rbScore   = view.findViewById(R.id.rb_score);
+
+        etText    = view.findViewById(R.id.et_text);
 
         btnSubmit = view.findViewById(R.id.btn_submit);
 
@@ -61,7 +74,9 @@ public class AddReviewBottomSheet extends BottomSheetDialogFragment {
         etText.setRawInputType(InputType.TYPE_CLASS_TEXT);
 
         btnSubmit.setEnabled(false);
+    }
 
+    private void setupListeners() {
         rbScore.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> btnSubmit.setEnabled(etText.getText().length() > 4 && rbScore.getRating() >= 1));
 
         etText.addTextChangedListener(new TextWatcher() {
@@ -78,34 +93,30 @@ public class AddReviewBottomSheet extends BottomSheetDialogFragment {
         });
 
         btnSubmit.setOnClickListener(v -> {
-            if (!Utils.deviceIsConnectedToInternet(context)) {
+            if (Utils.internetIsUnavailable(context)) {
                 Utils.showNoInternetToast(getActivity());
                 return;
             }
-            Api.postReview(context, new Callbacks.PostReviewComplete() {
-                @Override
-                public void onSuccess() {
-                    if (getActivity() != null) {
-                        ((ProductDetailsActivity) getActivity()).refreshReviews();
-                    }
-
-                    AddReviewBottomSheet.this.dismiss();
-                }
-
-                @Override
-                public void onFailure(String errorMessage) {
-                    Log.d(TAG, "postReview onFailure: " + errorMessage);
-                    Utils.showToast(getActivity(), getString(R.string.failed_to_post_review), Toast.LENGTH_LONG);
-                }
-            }, productID, (int) rbScore.getRating(), etText.getText().toString());
+            postReview();
         });
-
-        return view;
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        this.context = context;
+    private void postReview() {
+        Api.postReview(context, new Callbacks.PostReviewComplete() {
+            @Override
+            public void onSuccess() {
+                if (getActivity() != null) {
+                    ((ProductDetailsActivity) getActivity()).refreshReviews();
+                }
+
+                AddReviewBottomSheet.this.dismiss();
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Log.d(TAG, "postReview onFailure: " + errorMessage);
+                Utils.showToast(getActivity(), getString(R.string.failed_to_post_review), Toast.LENGTH_LONG);
+            }
+        }, productID, (int) rbScore.getRating(), etText.getText().toString());
     }
 }

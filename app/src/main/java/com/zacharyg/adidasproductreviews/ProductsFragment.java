@@ -113,10 +113,10 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
 
     @Override
     public void onProductClick(Product product) {
-//        if (!Utils.deviceIsConnectedToInternet(context)) {
-//            Utils.showNoInternetToast(getActivity());
-//            return;
-//        }
+        if (Utils.internetIsUnavailable(context)) {
+            Utils.showNoInternetToast(getActivity());
+            return;
+        }
         Intent productDetailsIntent = new Intent(context, ProductDetailsActivity.class);
         productDetailsIntent.putExtra("product", product);
         startActivity(productDetailsIntent);
@@ -179,7 +179,7 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
 
     private void fetchProducts() {
         showLoadingIndicator();
-        if (!Utils.deviceIsConnectedToInternet(context)) {
+        if (Utils.internetIsUnavailable(context)) {
             Utils.showNoInternetToast(getActivity());
             showServerIssueView();
             return;

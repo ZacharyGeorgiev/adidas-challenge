@@ -6,7 +6,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -22,50 +21,49 @@ import java.util.Locale;
 public class ProductDetailsActivity extends AppCompatActivity {
     private ImageButton ibBack;
 
-    private ImageView ivProduct;
-
-    private TextView tvPrice;
-    private TextView tvName;
-    private TextView tvDescription;
-
     private Button btnAddReview;
 
     private Product product;
 
     private ReviewsFragment reviewsFragment;
 
-    private static final String TAG = "ProductDetailsActivity";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_details);
 
-        ibBack        = findViewById(R.id.ib_back);
-
-        ivProduct     = findViewById(R.id.iv_product);
-
-        tvPrice       = findViewById(R.id.tv_price);
-        tvName        = findViewById(R.id.tv_name);
-        tvDescription = findViewById(R.id.tv_description);
-
-        btnAddReview  = findViewById(R.id.btn_add_review);
-
         Serializable serializable = getIntent().getSerializableExtra("product");
         if (serializable != null) {
             this.product = (Product) serializable;
-
-            Glide.with(this)
-                    .load(product.getImageUrl())
-                    .into(ivProduct);
-
-            tvPrice.setText(String.format(Locale.ENGLISH,"%s%d.00", product.getCurrency(), product.getPrice()));
-            tvName.setText(product.getName());
-            tvDescription.setText(product.getDescription());
-
-            Log.d("Products", "Product: " + product.toString());
         }
 
+        setupViews();
+        setupListeners();
+        updateStatusBarColor();
+        loadReviewsFragment();
+    }
+
+    private void setupViews() {
+        ibBack                 = findViewById(R.id.ib_back);
+
+        btnAddReview           = findViewById(R.id.btn_add_review);
+
+        ImageView ivProduct    = findViewById(R.id.iv_product);
+
+        TextView tvPrice       = findViewById(R.id.tv_price);
+        TextView tvName        = findViewById(R.id.tv_name);
+        TextView tvDescription = findViewById(R.id.tv_description);
+
+        Glide.with(this)
+                .load(product.getImageUrl())
+                .into(ivProduct);
+
+        tvPrice.setText(String.format(Locale.ENGLISH,"%s%d.00", product.getCurrency(), product.getPrice()));
+        tvName.setText(product.getName());
+        tvDescription.setText(product.getDescription());
+    }
+
+    private void setupListeners() {
         ibBack.setOnClickListener(v -> finish());
 
         btnAddReview.setOnClickListener(v -> {
@@ -74,22 +72,19 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 addReviewBottomSheet.show(getSupportFragmentManager(), "addReviewBottomSheet");
             }
         });
-
-        updateStatusBarColor();
-        loadReviewsFragment();
     }
 
     private void loadReviewsFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
         reviewsFragment = ReviewsFragment.newInstance(product.getId());
-        Log.d("Products", "Created the reviews fragment with id: " + product.getId());
+
         fragmentTransaction.add(R.id.fl_reviews, reviewsFragment);
         fragmentTransaction.commit();
     }
 
     public void refreshReviews() {
-        Log.d(TAG, "refreshReviews()");
         reviewsFragment.refreshReviews();
     }
 

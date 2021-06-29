@@ -9,15 +9,10 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
 public class Utils {
-    public static boolean deviceIsConnectedToInternet(Context context) {
+    public static boolean internetIsUnavailable(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
+        return cm.getActiveNetworkInfo() == null || !cm.getActiveNetworkInfo().isConnected();
     }
 
     public static void showNoInternetToast(Activity activity) {

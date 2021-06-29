@@ -64,28 +64,11 @@ public class ReviewsFragment extends Fragment implements ServerIssueFragment.OnR
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_reviews, container, false);
 
-        tvCount = view.findViewById(R.id.tv_count);
-        tvNoReviews = view.findViewById(R.id.tv_no_reviews);
-
-        rvReviews = view.findViewById(R.id.rv_reviews);
-
-        llReviews = view.findViewById(R.id.ll_reviews);
-
-        flLoading = view.findViewById(R.id.fl_loading);
-        flServerIssue = view.findViewById(R.id.fl_server_issue);
-
-        // Configure the recycler view
-        LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
-        layoutManager.setOrientation(RecyclerView.HORIZONTAL);
-        rvReviews.setLayoutManager(layoutManager);
-
-        PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
-        pagerSnapHelper.attachToRecyclerView(rvReviews);
-
         if (getArguments() != null) {
             productID = getArguments().getString(ARG_PRODUCT_ID);
         }
 
+        setupViews(view);
         loadFragments();
         fetchReviews();
 
@@ -101,6 +84,25 @@ public class ReviewsFragment extends Fragment implements ServerIssueFragment.OnR
     @Override
     public void onReload() {
         fetchReviews();
+    }
+
+    private void setupViews(View view) {
+        tvCount       = view.findViewById(R.id.tv_count);
+        tvNoReviews   = view.findViewById(R.id.tv_no_reviews);
+
+        rvReviews     = view.findViewById(R.id.rv_reviews);
+
+        llReviews     = view.findViewById(R.id.ll_reviews);
+
+        flLoading     = view.findViewById(R.id.fl_loading);
+        flServerIssue = view.findViewById(R.id.fl_server_issue);
+
+        // Configure the recycler view
+        LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
+        layoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        rvReviews.setLayoutManager(layoutManager);
+        PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
+        pagerSnapHelper.attachToRecyclerView(rvReviews);
     }
 
     private void loadFragments() {
@@ -142,7 +144,7 @@ public class ReviewsFragment extends Fragment implements ServerIssueFragment.OnR
 
     private void fetchReviews() {
         showLoadingIndicator();
-        if (!Utils.deviceIsConnectedToInternet(context)) {
+        if (Utils.internetIsUnavailable(context)) {
             Utils.showNoInternetToast(getActivity());
             showServerIssueView();
             return;

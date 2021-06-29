@@ -13,6 +13,8 @@ import android.widget.TextView;
 public class ServerIssueFragment extends Fragment {
     private static final String ARG_MESSAGE = "message";
 
+    private Button btnTryAgain;
+
     private String message;
 
     private OnReloadListener listener;
@@ -47,19 +49,26 @@ public class ServerIssueFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_server_issue, container, false);
 
+        setupViews(view);
+        setupListeners();
+
+        return view;
+    }
+
+    private void setupViews(View view) {
+        btnTryAgain        = view.findViewById(R.id.btn_try_again);
+
         TextView tvMessage = view.findViewById(R.id.tv_message);
 
-        Button btnTryAgain = view.findViewById(R.id.btn_try_again);
+        tvMessage.setText(message);
+    }
 
+    private void setupListeners() {
         btnTryAgain.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onReload();
             }
         });
-
-        tvMessage.setText(message);
-
-        return view;
     }
 
     @FunctionalInterface

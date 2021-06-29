@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -12,16 +11,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHolder> {
     private final Context context;
 
-    private List<Review> reviews;
+    private final List<Review> reviews;
 
     public ReviewsAdapter(Context context, List<Review> reviews) {
         this.context = context;
@@ -39,7 +35,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final View layoutView = LayoutInflater.from(context).inflate(R.layout.row_review, parent, false);
-        return new ReviewsAdapter.ViewHolder(layoutView);
+        return new ViewHolder(layoutView);
     }
 
     @Override
@@ -48,11 +44,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
 
         holder.rbScore.setRating(review.getRating());
 
-        if (review.getRating() < 4) {
-            holder.llRecommended.setVisibility(View.GONE);
-        } else {
-            holder.llRecommended.setVisibility(View.VISIBLE);
-        }
+        holder.llRecommended.setVisibility(review.getRating() < 4 ? View.GONE : View.VISIBLE);
 
         holder.tvText.setText(review.getText());
         holder.tvUsername.setText(review.getUsername());
@@ -64,7 +56,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
         return reviews.size();
     }
 
-    public final class ViewHolder extends RecyclerView.ViewHolder {
+    public static final class ViewHolder extends RecyclerView.ViewHolder {
         RatingBar rbScore;
 
         LinearLayout llRecommended;
