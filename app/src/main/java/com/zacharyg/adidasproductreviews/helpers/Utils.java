@@ -1,4 +1,4 @@
-package com.zacharyg.adidasproductreviews;
+package com.zacharyg.adidasproductreviews.helpers;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.zacharyg.adidasproductreviews.R;
 
 public class Utils {
     public static boolean internetIsUnavailable(Context context) {

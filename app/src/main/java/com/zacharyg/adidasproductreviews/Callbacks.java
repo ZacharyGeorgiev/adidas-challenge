@@ -1,5 +1,8 @@
 package com.zacharyg.adidasproductreviews;
 
+import com.zacharyg.adidasproductreviews.models.Product;
+import com.zacharyg.adidasproductreviews.models.Review;
+
 import java.util.List;
 
 public class Callbacks {

@@ -1,4 +1,4 @@
-package com.zacharyg.adidasproductreviews;
+package com.zacharyg.adidasproductreviews.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -14,6 +14,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.zacharyg.adidasproductreviews.dialogs.AddReviewBottomSheet;
+import com.zacharyg.adidasproductreviews.models.Product;
+import com.zacharyg.adidasproductreviews.R;
+import com.zacharyg.adidasproductreviews.fragments.ReviewsFragment;
 
 import java.io.Serializable;
 import java.util.Locale;

@@ -1,4 +1,4 @@
-package com.zacharyg.adidasproductreviews;
+package com.zacharyg.adidasproductreviews.models;
 
 import java.io.Serializable;
 import com.google.gson.annotations.Expose;

@@ -1,4 +1,4 @@
-package com.zacharyg.adidasproductreviews;
+package com.zacharyg.adidasproductreviews.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.zacharyg.adidasproductreviews.R;
+import com.zacharyg.adidasproductreviews.models.Product;
 
 import java.util.ArrayList;
 import java.util.List;

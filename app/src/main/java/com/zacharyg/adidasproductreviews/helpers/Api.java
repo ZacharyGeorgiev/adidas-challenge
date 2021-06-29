@@ -1,4 +1,4 @@
-package com.zacharyg.adidasproductreviews;
+package com.zacharyg.adidasproductreviews.helpers;
 
 import android.content.Context;
 import android.util.Log;
@@ -6,6 +6,9 @@ import android.util.Log;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.ion.Ion;
+import com.zacharyg.adidasproductreviews.Callbacks;
+import com.zacharyg.adidasproductreviews.models.Product;
+import com.zacharyg.adidasproductreviews.models.Review;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -15,8 +18,8 @@ public class Api {
     private static final String TAG = "Api";
     private static final String GET = "GET";
     private static final String POST = "POST";
-//    private static final String IP_ADDRESS = "10.2.2.2";
-    private static final String IP_ADDRESS = "192.168.1.126";
+    private static final String IP_ADDRESS = "10.2.2.2";
+//    private static final String IP_ADDRESS = "192.168.1.126";
     private static final String URL_BASE_PRODUCTS = "http://" + IP_ADDRESS + ":3001";
     private static final String URL_BASE_REVIEWS  = "http://" + IP_ADDRESS + ":3002";
     private static final String URL_RANDOM_USER_API  = "https://randomuser.me/api";

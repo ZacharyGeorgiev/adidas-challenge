@@ -1,4 +1,4 @@
-package com.zacharyg.adidasproductreviews;
+package com.zacharyg.adidasproductreviews.dialogs;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -19,6 +19,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.zacharyg.adidasproductreviews.Callbacks;
+import com.zacharyg.adidasproductreviews.R;
+import com.zacharyg.adidasproductreviews.activities.ProductDetailsActivity;
+import com.zacharyg.adidasproductreviews.helpers.Api;
+import com.zacharyg.adidasproductreviews.helpers.Utils;
 
 public class AddReviewBottomSheet extends BottomSheetDialogFragment {
     private RatingBar rbScore;

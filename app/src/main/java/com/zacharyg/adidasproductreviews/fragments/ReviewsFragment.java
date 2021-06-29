@@ -1,4 +1,4 @@
-package com.zacharyg.adidasproductreviews;
+package com.zacharyg.adidasproductreviews.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -18,6 +18,13 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.zacharyg.adidasproductreviews.Callbacks;
+import com.zacharyg.adidasproductreviews.R;
+import com.zacharyg.adidasproductreviews.adapters.ReviewsAdapter;
+import com.zacharyg.adidasproductreviews.helpers.Api;
+import com.zacharyg.adidasproductreviews.helpers.Utils;
+import com.zacharyg.adidasproductreviews.models.Review;
 
 import java.util.List;
 import java.util.Locale;

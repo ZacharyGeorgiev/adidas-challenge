@@ -1,4 +1,4 @@
-package com.zacharyg.adidasproductreviews;
+package com.zacharyg.adidasproductreviews.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
@@ -21,6 +21,9 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
+import com.zacharyg.adidasproductreviews.fragments.ProductsFragment;
+import com.zacharyg.adidasproductreviews.R;
 
 public class ProductsActivity extends AppCompatActivity {
     private RelativeLayout rlTopBar;

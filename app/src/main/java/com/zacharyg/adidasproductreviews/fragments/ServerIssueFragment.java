@@ -1,4 +1,4 @@
-package com.zacharyg.adidasproductreviews;
+package com.zacharyg.adidasproductreviews.fragments;
 
 import android.os.Bundle;
 
@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.zacharyg.adidasproductreviews.R;
 
 public class ServerIssueFragment extends Fragment {
     private static final String ARG_MESSAGE = "message";
