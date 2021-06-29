@@ -124,7 +124,6 @@ public class Api {
                         return;
                     }
                     callback.onFailure(e.getMessage());
-//                    Log.d(TAG, "Result: " + result.toString());
                 });
     }
 }

@@ -13,6 +13,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -94,6 +95,7 @@ public class AddReviewBottomSheet extends BottomSheetDialogFragment {
                 @Override
                 public void onFailure(String errorMessage) {
                     Log.d(TAG, "postReview onFailure: " + errorMessage);
+                    Utils.showToast(getActivity(), getString(R.string.failed_to_post_review), Toast.LENGTH_LONG);
                 }
             }, productID, (int) rbScore.getRating(), etText.getText().toString());
         });
