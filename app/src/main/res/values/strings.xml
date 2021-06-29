@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Adidas Product Reviews</string>
+    <string name="app_name">REVIEWS</string>
     <string name="path_search">M141,17 A9,9 0 1,1 142,16 L149,23</string>
     <string name="product">Product</string>
     <string name="sample_price">$85.00</string>
