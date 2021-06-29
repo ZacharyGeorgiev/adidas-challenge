@@ -19,4 +19,8 @@
     <string name="no_reviews_prompt">Did you buy this product? Leave the first review and let others know what you thought about it!</string>
     <string name="submit">Submit</string>
     <string name="loading">Loading...</string>
+    <string name="no_internet">No internet connection. Please check your internet connection and try again.</string>
+    <string name="connection_issue">Connection issue</string>
+    <string name="problem_loading_section">Hmm, it seems like we ran into a problem loading this section.</string>
+    <string name="try_again"><u>Try again</u></string>
 </resources>

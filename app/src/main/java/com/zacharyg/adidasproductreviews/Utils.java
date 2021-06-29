@@ -20,17 +20,12 @@ public class Utils {
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
-    public static boolean internetIsAvailable() {
-        try {
-            InetAddress address = InetAddress.getByName("www.google.com");
-            return !address.getHostAddress().equals("");
-        } catch (UnknownHostException e) {
-            // Log error
-        }
-        return false;
+    public static void showNoInternetToast(Activity activity) {
+        if (activity == null) { return; }
+        showToast(activity, activity.getString(R.string.no_internet), Toast.LENGTH_LONG);
     }
 
-    public static void showToast(@Nullable Activity activity, String message, int duration) {
+    public static void showToast(Activity activity, String message, int duration) {
         if (activity == null) { return; }
 
         LayoutInflater inflater = activity.getLayoutInflater();

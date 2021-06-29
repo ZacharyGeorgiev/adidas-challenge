@@ -15,8 +15,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -30,11 +32,15 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
 
     private RecyclerView rvProducts;
 
+    private RelativeLayout rlNoInternet;
+
     private LinearLayout llNoResults;
 
     private FrameLayout flLoading;
 
     private TextView tvNoResults;
+
+    private Button btnReload;
 
     private ProductsAdapter productsAdapter;
 
@@ -54,6 +60,7 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_products, container, false);
 
+        rlNoInternet = view.findViewById(R.id.rl_no_internet);
         llNoResults = view.findViewById(R.id.ll_no_results);
 
         flLoading = view.findViewById(R.id.fl_loading);
@@ -61,6 +68,8 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
         tvNoResults = view.findViewById(R.id.tv_no_results);
 
         rvProducts = view.findViewById(R.id.rv_products);
+
+        btnReload = view.findViewById(R.id.btn_reload);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
 
@@ -94,6 +103,8 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
 
             }
         });
+
+        btnReload.setOnClickListener(v -> fetchProducts());
 
         loadLoadingIndicatorFragment();
         fetchProducts();
@@ -141,18 +152,31 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
         }
     }
 
+    private void showNoInternetView() {
+        flLoading.setVisibility(View.GONE);
+        rvProducts.setVisibility(View.INVISIBLE);
+        rlNoInternet.setVisibility(View.VISIBLE);
+    }
+
     private void showLoadingIndicator() {
         flLoading.setVisibility(View.VISIBLE);
         rvProducts.setVisibility(View.INVISIBLE);
+        rlNoInternet.setVisibility(View.GONE);
     }
 
     private void hideLoadingIndicator() {
         flLoading.setVisibility(View.GONE);
         rvProducts.setVisibility(View.VISIBLE);
+        rlNoInternet.setVisibility(View.GONE);
     }
 
     private void fetchProducts() {
         showLoadingIndicator();
+        if (!Utils.deviceIsConnectedToInternet(context)) {
+            Utils.showNoInternetToast(getActivity());
+            showNoInternetView();
+            return;
+        }
         Api.getProducts(context, new Callbacks.GetProductsComplete() {
             @Override
             public void onSuccess(List<Product> products) {
