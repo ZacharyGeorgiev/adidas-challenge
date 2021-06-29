@@ -52,6 +52,8 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
 
     private List<Product> products;
 
+    private boolean justLaunched = true;
+
     public ProductsFragment() {
     }
 
@@ -90,6 +92,10 @@ public class ProductsFragment extends Fragment implements ProductsAdapter.OnProd
                         ProductsActivity productsActivity = (ProductsActivity) getActivity();
 
                         if (layoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                            if (justLaunched) {
+                                justLaunched = false;
+                                return;
+                            }
                             productsActivity.moveProducts(true);
                             return;
                         }

@@ -46,7 +46,6 @@ public class ProductsActivity extends AppCompatActivity {
 
     private boolean topBarAnimationInProgress = false;
     private boolean productsAnimationInProgress = false;
-    private boolean appJustLaunched = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,12 +60,12 @@ public class ProductsActivity extends AppCompatActivity {
     }
 
     private void setupViews() {
-        rlTopBar = findViewById(R.id.rl_top_bar);
+        rlTopBar   = findViewById(R.id.rl_top_bar);
 
         flProducts = findViewById(R.id.fl_products);
 
-        ivSearch = findViewById(R.id.iv_search);
-        etSearch = findViewById(R.id.et_search);
+        ivSearch   = findViewById(R.id.iv_search);
+        etSearch   = findViewById(R.id.et_search);
 
         etSearch.setEnabled(false);
     }
@@ -110,14 +109,15 @@ public class ProductsActivity extends AppCompatActivity {
     }
 
     public void moveProducts(boolean down) {
-        if (appJustLaunched && down) {
-            flProducts.setTranslationY(rlTopBar.getHeight());
-            appJustLaunched = false;
-            return;
-        }
         if (productsAnimationInProgress) { return; }
 
         productsAnimationInProgress = true;
+
+        if (!down) {
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)flProducts.getLayoutParams();
+            params.setMargins(0, 0, 0, 0);
+            flProducts.setLayoutParams(params);
+        }
 
         flProducts.animate()
                 .translationY(down ? rlTopBar.getHeight() : 0f)
